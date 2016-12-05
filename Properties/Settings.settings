@@ -1,0 +1,39 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IcingaBusylightAgent.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="icinga_url" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://myhost.localdomain.loc:5665/</Value>
+    </Setting>
+    <Setting Name="icinga_user" Type="System.String" Scope="User">
+      <Value Profile="(Default)">simone</Value>
+    </Setting>
+    <Setting Name="icinga_pass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">giertz</Value>
+    </Setting>
+    <Setting Name="sound" Type="Busylight.BusylightJingleClip" Scope="User">
+      <Value Profile="(Default)">IM2</Value>
+    </Setting>
+    <Setting Name="sound_volume" Type="Busylight.BusylightVolume" Scope="User">
+      <Value Profile="(Default)">Max</Value>
+    </Setting>
+    <Setting Name="color_up_ok" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Lime</Value>
+    </Setting>
+    <Setting Name="color_down_crit" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="color_unreach_warn" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">255, 128, 0</Value>
+    </Setting>
+    <Setting Name="color_unknown" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Fuchsia</Value>
+    </Setting>
+    <Setting Name="debug" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="icinga_update_interval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
