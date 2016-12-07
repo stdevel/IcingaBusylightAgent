@@ -117,4 +117,189 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;llabel_plenom.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="llabel_stackoverflow.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="textBox1.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;llabel_stackoverflow.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="llabel_plenom.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lbl_Version.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 13</value>
+  </data>
+  <data name="&gt;&gt;lbl_Version.Name" xml:space="preserve">
+    <value>lbl_Version</value>
+  </data>
+  <data name="llabel_github.Text" xml:space="preserve">
+    <value>IcingaBusylightAgent on GitHub</value>
+  </data>
+  <data name="&gt;&gt;llabel_stackoverflow.Name" xml:space="preserve">
+    <value>llabel_stackoverflow</value>
+  </data>
+  <data name="llabel_icinga.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="llabel_github.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 13</value>
+  </data>
+  <data name="llabel_icinga.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lbl_Version.Text" xml:space="preserve">
+    <value>Version: XYZ</value>
+  </data>
+  <data name="&gt;&gt;lbl_Version.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="llabel_stackoverflow.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="llabel_plenom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 13</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>About...</value>
+  </data>
+  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="lbl_Version.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;lbl_Version.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llabel_icinga.Name" xml:space="preserve">
+    <value>llabel_icinga</value>
+  </data>
+  <data name="llabel_github.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 284</value>
+  </data>
+  <data name="&gt;&gt;llabel_icinga.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 147</value>
+  </data>
+  <data name="llabel_icinga.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 162</value>
+  </data>
+  <data name="&gt;&gt;llabel_plenom.Name" xml:space="preserve">
+    <value>llabel_plenom</value>
+  </data>
+  <data name="llabel_stackoverflow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 209</value>
+  </data>
+  <data name="llabel_github.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="llabel_stackoverflow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 13</value>
+  </data>
+  <data name="llabel_plenom.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;textBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llabel_github.Name" xml:space="preserve">
+    <value>llabel_github</value>
+  </data>
+  <data name="&gt;&gt;llabel_github.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;llabel_stackoverflow.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lbl_Version.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;llabel_icinga.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="llabel_icinga.Text" xml:space="preserve">
+    <value>The Icinga project</value>
+  </data>
+  <data name="lbl_Version.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 261</value>
+  </data>
+  <data name="&gt;&gt;llabel_github.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="llabel_plenom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 186</value>
+  </data>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>IcingaBusylightAgent is an agent displaying Icinga2 host and service events with Plenom Kuando Busylight devices. It will generate visible and audible alarms if your hosts/services are crashing.
+
+Kudos:
+</value>
+  </data>
+  <data name="llabel_github.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FormAbout</value>
+  </data>
+  <data name="&gt;&gt;lbl_Version.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
+    <value>textBox1</value>
+  </data>
+  <data name="llabel_icinga.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 13</value>
+  </data>
+  <data name="&gt;&gt;llabel_icinga.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="llabel_stackoverflow.Text" xml:space="preserve">
+    <value>Stackoverflow &lt;3</value>
+  </data>
+  <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>284, 309</value>
+  </data>
+  <data name="&gt;&gt;llabel_plenom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llabel_github.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="&gt;&gt;llabel_plenom.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="llabel_plenom.Text" xml:space="preserve">
+    <value>Plenom Kuando Busylight SDK</value>
+  </data>
+  <data name="&gt;&gt;llabel_stackoverflow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>

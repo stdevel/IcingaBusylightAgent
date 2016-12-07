@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 //Threading
 using System.Threading;
+//Localization
+using System.Resources;
 
 namespace IcingaBusylightAgent
 {
@@ -23,24 +25,27 @@ namespace IcingaBusylightAgent
         }
     }
 
-    //Test
+    //TrayIcon context
     public class AgentContext : ApplicationContext
     {
         private NotifyIcon trayIcon;
 
         public AgentContext()
         {
+            //Translate _all_ the strings!
+            ResourceManager rm = Strings.ResourceManager;
+
             //Initialize tray icon
             trayIcon = new NotifyIcon()
             {
                 Icon = IcingaBusylightAgent.Properties.Resources.icinga,
                 ContextMenu = new ContextMenu(
                         new MenuItem[] {
-                            new MenuItem("Configure", configure),
-                            new MenuItem("Update", update),
+                            new MenuItem(rm.GetString("mnu_configure"), configure),
+                            new MenuItem(rm.GetString("mnu_update"), update),
                             new MenuItem("-"),
-                            new MenuItem("About Icinga Busylight...", about),
-                            new MenuItem("Exit", exit)
+                            new MenuItem(rm.GetString("mnu_about"), about),
+                            new MenuItem(rm.GetString("mnu_exit"), exit)
                         }
                     ),
                 Visible = true,
@@ -63,7 +68,6 @@ namespace IcingaBusylightAgent
             Thread dataThread = new Thread(workerObject.updateData);
 
         }
-        //TODO: auto update?
 
         void update(object sender, EventArgs e)
         {

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 //Threading
 using System.Threading;
+//Localization
+using System.Resources;
 
 namespace IcingaBusylightAgent
 {
@@ -29,6 +31,9 @@ namespace IcingaBusylightAgent
             {4, Busylight.BusylightVolume.Max }
         };
 
+        //Translate _all_ the strings!
+        ResourceManager rm = Strings.ResourceManager;
+
         public FormSettings()
         {
             InitializeComponent();
@@ -41,7 +46,7 @@ namespace IcingaBusylightAgent
             txt_username.Text = Properties.Settings.Default.icinga_user;
             txt_password.Text = Properties.Settings.Default.icinga_pass;
             track_timer.Value = (Properties.Settings.Default.icinga_update_interval/60);
-            lbl_track_timer.Text = track_timer.Value + " minute(s)";
+            lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
 
             //Preselect color items
             btn_up_ok.BackColor = Properties.Settings.Default.color_up_ok;
@@ -177,7 +182,7 @@ namespace IcingaBusylightAgent
             System.Console.WriteLine("Timer is '{0}', value will be '{1}'", track_timer.Value, (track_timer.Value * 60));
 
             //Set label
-            lbl_track_timer.Text = track_timer.Value + " minute(s)";
+            lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
         }
     }
 }
