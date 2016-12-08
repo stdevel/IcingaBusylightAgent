@@ -68,7 +68,7 @@ namespace IcingaBusylightAgent
                 IcingaBusylightAgent.Properties.Settings.Default.icinga_url,
                 IcingaBusylightAgent.Properties.Settings.Default.icinga_user,
                 IcingaBusylightAgent.Properties.Settings.Default.icinga_pass,
-                (IcingaBusylightAgent.Properties.Settings.Default.icinga_update_interval*1000),
+                (IcingaBusylightAgent.Properties.Settings.Default.icinga_update_interval*1000*60),
                 IcingaBusylightAgent.Properties.Settings.Default.color_up_ok,
                 IcingaBusylightAgent.Properties.Settings.Default.color_down_crit,
                 IcingaBusylightAgent.Properties.Settings.Default.color_unreach_warn,
