@@ -137,4 +137,12 @@
     <value>Aktualisieren</value>
     <comment>ContextMnu TrayIcon, Update</comment>
   </data>
+  <data name="welcome_message" xml:space="preserve">
+    <value>ist aktiv</value>
+    <comment>TrayIcon, Welcome message</comment>
+  </data>
+  <data name="welcome_title" xml:space="preserve">
+    <value>Willkommen</value>
+    <comment>TrayIcon, Welcome title</comment>
+  </data>
 </root>

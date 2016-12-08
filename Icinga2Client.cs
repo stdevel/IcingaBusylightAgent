@@ -48,6 +48,7 @@ namespace IcingaBusylightAgent
 
         //Some Icinga2 getters/setters
         public void setUrl(String new_url) { this.url = new_url; }
+        public String getUrl() { return this.url; }
         public void setUsername(String new_user) { this.username = new_user; }
         public String getUsername() { return this.username; }
         public void setPassword(String new_pass) { this.password = new_pass; }
@@ -88,16 +89,10 @@ namespace IcingaBusylightAgent
             setSound(sound);
             setVolume(volume);
 
-            System.Console.WriteLine("Color warn RGB: {0}/{1}/{2}", this.color_unreach_warn.R, this.color_unreach_warn.G, this.color_unreach_warn.B);
-
-            //Test: fix broken colors
-            /*this.color_up_ok = Color.Green;
-            this.color_unreach_warn = Color.OrangeRed;
-            this.color_down_crit = Color.Red;
-            this.color_unknown = Color.Fuchsia;*/
-
             //Set timer
             updateTimer = new System.Threading.Timer(updateData, null, interval, interval);
+
+            System.Console.WriteLine("Yes, this is Icinga2Client: URL='{0}', username='{1}', interval='{2}'", getUrl(), getUsername(), getInterval());
         }
 
         private CredentialCache createCredentials()
@@ -153,58 +148,144 @@ namespace IcingaBusylightAgent
                 else
                 {
                     //Impossibru!
-                    return "FAIL";
+                    throw new Exception("Impossibru");
                 }
             }
             catch(System.Net.WebException e)
             {
                 //Could not access information
                 System.Console.WriteLine("Could not access information, error: {0}", e.Message);
-                return "FAIL";
+                throw new Exception("Impossibru");
             }
             catch(System.ArgumentException e)
             {
                 System.Console.WriteLine("Error: {0}", e.Message);
-                return "FAIL";
+                throw new Exception("Impossibru");
             }
             catch
             {
                 //Impossibru!
-                return "FAIL";
+                throw new Exception("Impossibru");
+            }
+        }
+
+        private List<apiDataset> updateHosts()
+        {
+            //Update host information
+            System.Console.WriteLine("Updating host information");
+            try
+            {
+                //Get result
+                string result = getHTMLResult(this.url + "v1/objects/hosts?filter=host.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
+                //BOO: Removing root level as I'm too lame to do this nicer...
+                result = result.Substring(11, (result.Length - 12));
+                System.Console.WriteLine("GET: {0}", this.url + "v1/objects/hosts?filter=host.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
+                System.Console.WriteLine(result);
+                //Try to deserialize objects
+                var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
+                foreach (apiDataset entry in datasetList)
+                {
+                    //dump result
+                    System.Console.WriteLine("Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
+                }
+                return datasetList;
+            }
+            catch (UriFormatException e)
+            {
+                //Connection could not be openend - URL invalid/host down?
+                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message);
+                throw new Exception("Impossibru");
+            }
+        }
+
+        private List<apiDataset> updateServices()
+        {
+            //Update service information
+            System.Console.WriteLine("Updating service information");
+            try
+            {
+                //Get result
+                string result = getHTMLResult(this.url + "v1/objects/services?filter=service.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
+                //BOO: Removing root level as I'm too lame to do this nicer...
+                result = result.Substring(11, (result.Length - 12));
+                System.Console.WriteLine("GET: {0}", this.url + "v1/objects/services?filter=service.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
+                System.Console.WriteLine(result);
+                //Try to deserialize objects
+                var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
+                foreach (apiDataset entry in datasetList)
+                {
+                    //dump result
+                    System.Console.WriteLine("Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
+                }
+                return datasetList;
+            }
+            catch(UriFormatException e)
+            {
+                //Connection could not be openend - URL invalid/host down?
+                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/services", e.Message);
+                throw new Exception("Impossibru");
             }
         }
 
         public void updateData(object state)
         {
             //Update data
+            System.Console.WriteLine("Updating data thread...");
+
+            //Variables
             BusylightColor targetColor;
 
             lock (this)
-            {
-                System.Console.WriteLine("Updating data thread...");
+            {  
                 //Initializing Busylight
-                var controller = new Busylight.SDK();   
+                var controller = new Busylight.SDK();
 
-                try
+                //Check host information if requested
+                if(Properties.Settings.Default.icinga_check_hosts == true)
                 {
-                    string result = getHTMLResult(this.url + "v1/objects/services?filter=service.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
-                    //BOO: Removing root level as I'm too lame to do this nicer...
-                    result = result.Substring(11, (result.Length-12));
-                    System.Console.WriteLine("GET: {0}", this.url + "v1/objects/services?filter=service.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
-                    System.Console.WriteLine(result);
-                    //Try to deserialize objects
-                    var test = JsonConvert.DeserializeObject<List<apiDataset>>(result);
-                    foreach(apiDataset entry in test)
-                    {
-                        //dump result
-                        System.Console.WriteLine("Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
-                    }
-                    //filter for non-acknowledged information
+                    //Get host information
+                    List<apiDataset> hostData = updateHosts();
+
+                    //Filter for non-acknowledged information
                     //Proudly inspired by: http://stackoverflow.com/questions/26196/filtering-collections-in-c-sharp
-                    foreach (apiDataset entry in test.Where(entry => (entry.attrs.acknowledgement == 0.0)))
+                    foreach (apiDataset entry in hostData.Where(entry => (entry.attrs.acknowledgement == 0.0)))
                     {
                         //dump result
-                        System.Console.WriteLine("UNACKNOWLEDGED!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
+                        System.Console.WriteLine("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
+                        if (entry.attrs.state == 3)
+                        {
+                            //unknown
+                            targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
+                        }
+                        else if (entry.attrs.state == 2)
+                        {
+                            //critical
+                            targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
+                        }
+                        else
+                        {
+                            //warning
+                            targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
+                        }
+                        System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                        controller.Jingle(targetColor, this.sound, this.volume);
+                        Thread.Sleep(5000);
+                        controller.Terminate();
+                    }
+                }
+
+                //Check service information if requested
+                if(Properties.Settings.Default.icinga_check_services == true)
+                {
+                    //Get service information
+                    List<apiDataset> serviceData = updateServices();
+
+                    //Filter for non-acknowledged information
+                    //Proudly inspired by: http://stackoverflow.com/questions/26196/filtering-collections-in-c-sharp
+                    foreach (apiDataset entry in serviceData.Where(entry => (entry.attrs.acknowledgement == 0.0)))
+                    {
+                        //dump result
+                        System.Console.WriteLine("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
                         if(entry.attrs.state == 3)
                         {
                             //unknown
@@ -226,11 +307,7 @@ namespace IcingaBusylightAgent
                         controller.Terminate();
                     }
                 }
-                catch (UriFormatException e)
-                {
-                    //Connection could not be openend - URL invalid/host down?
-                    System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url+"v1/objects/hosts", e.Message);
-                }
+
             }
         }
 

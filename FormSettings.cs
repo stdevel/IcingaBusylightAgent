@@ -47,6 +47,8 @@ namespace IcingaBusylightAgent
             txt_password.Text = Properties.Settings.Default.icinga_pass;
             track_timer.Value = (Properties.Settings.Default.icinga_update_interval/60);
             lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
+            chkHosts.Checked = Properties.Settings.Default.icinga_check_hosts;
+            chkServices.Checked = Properties.Settings.Default.icinga_check_services;
 
             //Preselect color items
             btn_up_ok.BackColor = Properties.Settings.Default.color_up_ok;
@@ -57,6 +59,7 @@ namespace IcingaBusylightAgent
             cdg_unreach_warn.Color = Properties.Settings.Default.color_unreach_warn;
             cdg_down_crit.Color = Properties.Settings.Default.color_down_crit;
             cdg_unknown.Color = Properties.Settings.Default.color_unknown;
+
             //Preselect sound items
             box_sound.SelectedItem = Properties.Settings.Default.sound.ToString();
             track_volume.Value = this.dictVol.FirstOrDefault(x => x.Value == Properties.Settings.Default.sound_volume).Key;
@@ -67,6 +70,13 @@ namespace IcingaBusylightAgent
         {
             //TODO: Validate settings - attach / for URL?
 
+            //Set Icinga settings
+            Properties.Settings.Default.icinga_url = txt_url.Text;
+            Properties.Settings.Default.icinga_user = txt_username.Text;
+            Properties.Settings.Default.icinga_pass = txt_password.Text;
+            Properties.Settings.Default.icinga_update_interval = track_timer.Value;
+            Properties.Settings.Default.icinga_check_hosts = chkHosts.Checked;
+            Properties.Settings.Default.icinga_check_services = chkServices.Checked;
             //Set colors
             Properties.Settings.Default.color_up_ok = cdg_up_ok.Color;
             Properties.Settings.Default.color_unreach_warn = cdg_unreach_warn.Color;

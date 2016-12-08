@@ -134,10 +134,10 @@
     <value>Passwort:</value>
   </data>
   <data name="lbl_sounds.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
+    <value>74, 13</value>
   </data>
   <data name="lbl_sounds.Text" xml:space="preserve">
-    <value>Ton:</value>
+    <value>Busylight-Ton:</value>
   </data>
   <data name="lbl_colors.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
@@ -156,6 +156,18 @@
   </data>
   <data name="lbl_timer.Text" xml:space="preserve">
     <value>Aktualisierung:</value>
+  </data>
+  <data name="lbl_checks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
+  </data>
+  <data name="lbl_checks.Text" xml:space="preserve">
+    <value>Überprüfe:</value>
+  </data>
+  <data name="chkServices.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 17</value>
+  </data>
+  <data name="chkServices.Text" xml:space="preserve">
+    <value>Dienste</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Einstellungen</value>

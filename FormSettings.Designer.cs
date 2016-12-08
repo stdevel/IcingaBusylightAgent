@@ -53,6 +53,9 @@
             this.track_timer = new System.Windows.Forms.TrackBar();
             this.lbl_track_timer = new System.Windows.Forms.Label();
             this.lbl_track_volume = new System.Windows.Forms.Label();
+            this.lbl_checks = new System.Windows.Forms.Label();
+            this.chkHosts = new System.Windows.Forms.CheckBox();
+            this.chkServices = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).BeginInit();
             this.SuspendLayout();
@@ -180,10 +183,30 @@
             resources.ApplyResources(this.lbl_track_volume, "lbl_track_volume");
             this.lbl_track_volume.Name = "lbl_track_volume";
             // 
+            // lbl_checks
+            // 
+            resources.ApplyResources(this.lbl_checks, "lbl_checks");
+            this.lbl_checks.Name = "lbl_checks";
+            // 
+            // chkHosts
+            // 
+            resources.ApplyResources(this.chkHosts, "chkHosts");
+            this.chkHosts.Name = "chkHosts";
+            this.chkHosts.UseVisualStyleBackColor = true;
+            // 
+            // chkServices
+            // 
+            resources.ApplyResources(this.chkServices, "chkServices");
+            this.chkServices.Name = "chkServices";
+            this.chkServices.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.chkServices);
+            this.Controls.Add(this.chkHosts);
+            this.Controls.Add(this.lbl_checks);
             this.Controls.Add(this.lbl_track_volume);
             this.Controls.Add(this.lbl_track_timer);
             this.Controls.Add(this.track_timer);
@@ -242,6 +265,9 @@
         private System.Windows.Forms.TrackBar track_timer;
         private System.Windows.Forms.Label lbl_track_timer;
         private System.Windows.Forms.Label lbl_track_volume;
+        private System.Windows.Forms.Label lbl_checks;
+        private System.Windows.Forms.CheckBox chkHosts;
+        private System.Windows.Forms.CheckBox chkServices;
     }
 }
 

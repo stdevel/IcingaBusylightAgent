@@ -119,20 +119,23 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lbl_track_volume.Location" type="System.Drawing.Point, System.Drawing">
-    <value>309, 238</value>
+    <value>309, 290</value>
   </data>
   <data name="track_timer.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 45</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbl_url.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="chkHosts.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
   </data>
-  <data name="&gt;&gt;txt_url.Name" xml:space="preserve">
-    <value>txt_url</value>
+  <data name="&gt;&gt;lbl_password.ZOrder" xml:space="preserve">
+    <value>19</value>
   </data>
-  <data name="&gt;&gt;btn_down_crit.Name" xml:space="preserve">
-    <value>btn_down_crit</value>
+  <data name="&gt;&gt;lbl_colors.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;cdg_unreach_warn.Name" xml:space="preserve">
+    <value>cdg_unreach_warn</value>
   </data>
   <data name="lbl_track_timer.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 13</value>
@@ -140,17 +143,20 @@
   <data name="&gt;&gt;cdg_unreach_warn.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColorDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="chkHosts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 163</value>
+  </data>
   <data name="&gt;&gt;cdg_down_crit.Name" xml:space="preserve">
     <value>cdg_down_crit</value>
+  </data>
+  <data name="&gt;&gt;lbl_checks.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;track_volume.Type" xml:space="preserve">
     <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="btn_unknown.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 23</value>
-  </data>
-  <data name="lbl_timer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 96</value>
   </data>
   <data name="&gt;&gt;btn_save.Parent" xml:space="preserve">
     <value>$this</value>
@@ -161,17 +167,23 @@
   <data name="btn_down_crit.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;txt_username.ZOrder" xml:space="preserve">
-    <value>14</value>
+  <data name="lbl_track_volume.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
   </data>
   <data name="&gt;&gt;lbl_track_timer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="box_sound.Items" xml:space="preserve">
+    <value>IM1</value>
+  </data>
+  <data name="&gt;&gt;chkHosts.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="&gt;&gt;track_timer.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="lbl_sounds.Text" xml:space="preserve">
-    <value>Sound:</value>
+    <value>Busylight sound:</value>
   </data>
   <data name="btn_down_crit.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 23</value>
@@ -191,14 +203,11 @@
   <data name="lbl_sounds.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="btn_down_crit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 292</value>
-  </data>
-  <data name="lbl_track_volume.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+  <data name="lbl_password.Text" xml:space="preserve">
+    <value>Password:</value>
   </data>
   <data name="btn_unreach_warn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 321</value>
+    <value>207, 373</value>
   </data>
   <data name="&gt;&gt;track_timer.Type" xml:space="preserve">
     <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -209,8 +218,11 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="chkHosts.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="&gt;&gt;lbl_colors.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="btn_unreach_warn.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 23</value>
@@ -218,17 +230,14 @@
   <data name="box_sound.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;cdg_unreach_warn.Name" xml:space="preserve">
-    <value>cdg_unreach_warn</value>
-  </data>
-  <data name="track_timer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 89</value>
+  <data name="&gt;&gt;cdg_up_ok.Name" xml:space="preserve">
+    <value>cdg_up_ok</value>
   </data>
   <data name="box_sound.Items1" xml:space="preserve">
     <value>IM2</value>
   </data>
-  <data name="box_sound.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 21</value>
+  <data name="lbl_checks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 168</value>
   </data>
   <data name="lbl_volume.Text" xml:space="preserve">
     <value>Volume:</value>
@@ -237,16 +246,16 @@
     <value>6, 13</value>
   </data>
   <data name="&gt;&gt;txt_url.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>18</value>
   </data>
-  <data name="lbl_track_timer.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="chkServices.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 186</value>
   </data>
   <data name="btn_unreach_warn.Text" xml:space="preserve">
     <value>Unreachable / Warning</value>
   </data>
   <data name="&gt;&gt;btn_down_crit.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;lbl_track_timer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -254,8 +263,11 @@
   <data name="btn_up_ok.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 23</value>
   </data>
+  <data name="&gt;&gt;chkServices.Name" xml:space="preserve">
+    <value>chkServices</value>
+  </data>
   <data name="&gt;&gt;track_volume.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="lbl_password.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 66</value>
@@ -273,7 +285,7 @@
     <value>11</value>
   </data>
   <data name="&gt;&gt;txt_password.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="txt_username.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 20</value>
@@ -281,11 +293,11 @@
   <data name="&gt;&gt;btn_unknown.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="&gt;&gt;btn_unknown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="lbl_timer.Text" xml:space="preserve">
     <value>Timer:</value>
-  </data>
-  <data name="&gt;&gt;txt_password.Parent" xml:space="preserve">
-    <value>$this</value>
   </data>
   <data name="&gt;&gt;track_timer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -293,17 +305,24 @@
   <data name="&gt;&gt;lbl_timer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btn_up_ok.Name" xml:space="preserve">
-    <value>btn_up_ok</value>
+  <data name="chkServices.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
   </data>
   <data name="lbl_password.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="chkServices.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="lbl_username.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lbl_volume.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
+  </data>
+  <data name="lbl_track_timer.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;box_sound.Name" xml:space="preserve">
     <value>box_sound</value>
@@ -323,6 +342,15 @@
   <data name="&gt;&gt;btn_up_ok.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;box_sound.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;chkServices.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lbl_checks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 13</value>
+  </data>
   <data name="&gt;&gt;lbl_sounds.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
@@ -341,20 +369,23 @@
   <data name="btn_up_ok.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="&gt;&gt;lbl_timer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;chkHosts.Name" xml:space="preserve">
+    <value>chkHosts</value>
+  </data>
+  <data name="chkServices.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 17</value>
   </data>
   <data name="lbl_sounds.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 13</value>
+    <value>84, 13</value>
   </data>
   <data name="lbl_url.Text" xml:space="preserve">
     <value>Icinga2 URL:</value>
   </data>
   <data name="box_sound.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 162</value>
+    <value>207, 214</value>
   </data>
-  <data name="&gt;&gt;lbl_colors.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;lbl_checks.Name" xml:space="preserve">
+    <value>lbl_checks</value>
   </data>
   <data name="lbl_url.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 15</value>
@@ -368,14 +399,11 @@
   <data name="&gt;&gt;track_volume.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;lbl_password.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="btn_save.Text" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="&gt;&gt;btn_up_ok.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="btn_save.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -384,16 +412,19 @@
     <value>True</value>
   </data>
   <data name="&gt;&gt;lbl_sounds.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;lbl_username.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btn_up_ok.Name" xml:space="preserve">
+    <value>btn_up_ok</value>
   </data>
   <data name="track_volume.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 45</value>
   </data>
   <data name="lbl_volume.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 189</value>
+    <value>12, 241</value>
   </data>
   <data name="txt_url.Location" type="System.Drawing.Point, System.Drawing">
     <value>207, 12</value>
@@ -407,20 +438,14 @@
   <data name="&gt;&gt;lbl_colors.Name" xml:space="preserve">
     <value>lbl_colors</value>
   </data>
-  <data name="lbl_colors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 13</value>
+  <data name="&gt;&gt;txt_url.Name" xml:space="preserve">
+    <value>txt_url</value>
   </data>
-  <data name="&gt;&gt;cdg_up_ok.Name" xml:space="preserve">
-    <value>cdg_up_ok</value>
-  </data>
-  <data name="lbl_password.Text" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="lbl_track_volume.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="btn_down_crit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 344</value>
   </data>
   <data name="&gt;&gt;lbl_track_timer.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="lbl_volume.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -434,8 +459,8 @@
   <data name="&gt;&gt;btn_unreach_warn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btn_unknown.Name" xml:space="preserve">
-    <value>btn_unknown</value>
+  <data name="&gt;&gt;txt_url.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="lbl_colors.Text" xml:space="preserve">
     <value>Colors:</value>
@@ -458,11 +483,14 @@
   <data name="txt_password.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 20</value>
   </data>
+  <data name="btn_save.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 453</value>
+  </data>
   <data name="lbl_url.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 13</value>
   </data>
   <data name="track_volume.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 189</value>
+    <value>207, 241</value>
   </data>
   <data name="&gt;&gt;txt_username.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -473,17 +501,23 @@
   <data name="lbl_colors.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;lbl_password.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="lbl_colors.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 13</value>
+  </data>
+  <data name="track_timer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>207, 89</value>
+  </data>
+  <data name="lbl_checks.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;lbl_timer.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;lbl_track_timer.Name" xml:space="preserve">
     <value>lbl_track_timer</value>
   </data>
-  <data name="&gt;&gt;btn_save.Name" xml:space="preserve">
-    <value>btn_save</value>
+  <data name="&gt;&gt;lbl_checks.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="btn_up_ok.Text" xml:space="preserve">
     <value>Up / Okay</value>
@@ -491,35 +525,62 @@
   <data name="&gt;&gt;btn_unreach_warn.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="&gt;&gt;txt_username.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;track_timer.Name" xml:space="preserve">
+    <value>track_timer</value>
+  </data>
+  <data name="chkServices.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbl_track_timer.Text" xml:space="preserve">
+    <value>x minute(s)</value>
+  </data>
   <data name="lbl_volume.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 13</value>
   </data>
   <data name="lbl_track_volume.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 13</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;lbl_username.Name" xml:space="preserve">
     <value>lbl_username</value>
   </data>
-  <data name="&gt;&gt;txt_url.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;lbl_checks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="lbl_checks.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
   </data>
   <data name="lbl_colors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 264</value>
+    <value>12, 316</value>
   </data>
-  <data name="&gt;&gt;cdg_unknown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColorDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lbl_checks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;lbl_volume.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
-  <data name="txt_password.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="lbl_timer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 96</value>
+  </data>
+  <data name="chkServices.Text" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="chkHosts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 17</value>
+  </data>
+  <data name="lbl_checks.Text" xml:space="preserve">
+    <value>Check:</value>
   </data>
   <data name="&gt;&gt;cdg_unknown.Name" xml:space="preserve">
     <value>cdg_unknown</value>
+  </data>
+  <data name="&gt;&gt;lbl_url.Name" xml:space="preserve">
+    <value>lbl_url</value>
   </data>
   <data name="&gt;&gt;lbl_url.Parent" xml:space="preserve">
     <value>$this</value>
@@ -528,7 +589,7 @@
     <value>207, 63</value>
   </data>
   <data name="&gt;&gt;btn_unknown.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;lbl_username.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -537,19 +598,19 @@
     <value>18</value>
   </data>
   <data name="btn_up_ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 263</value>
+    <value>207, 315</value>
   </data>
-  <data name="&gt;&gt;lbl_volume.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="lbl_url.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="btn_unknown.Text" xml:space="preserve">
-    <value>Unknown</value>
+  <data name="&gt;&gt;btn_unknown.Name" xml:space="preserve">
+    <value>btn_unknown</value>
   </data>
   <data name="txt_url.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="box_sound.Items" xml:space="preserve">
-    <value>IM1</value>
+  <data name="box_sound.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 21</value>
   </data>
   <data name="&gt;&gt;cdg_up_ok.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColorDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -557,11 +618,17 @@
   <data name="&gt;&gt;txt_url.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;box_sound.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="&gt;&gt;chkHosts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;track_timer.Name" xml:space="preserve">
-    <value>track_timer</value>
+  <data name="&gt;&gt;box_sound.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;btn_save.Name" xml:space="preserve">
+    <value>btn_save</value>
+  </data>
+  <data name="lbl_track_volume.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;lbl_sounds.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -572,17 +639,20 @@
   <data name="lbl_sounds.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;box_sound.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;chkServices.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>370, 452</value>
+    <value>370, 493</value>
   </data>
   <data name="&gt;&gt;lbl_timer.Name" xml:space="preserve">
     <value>lbl_timer</value>
   </data>
-  <data name="lbl_track_timer.Text" xml:space="preserve">
-    <value>x minute(s)</value>
+  <data name="&gt;&gt;chkServices.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lbl_volume.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="txt_url.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 20</value>
@@ -591,55 +661,70 @@
     <value>17</value>
   </data>
   <data name="&gt;&gt;lbl_track_volume.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
+  </data>
+  <data name="chkHosts.Text" xml:space="preserve">
+    <value>Hosts</value>
   </data>
   <data name="lbl_sounds.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 165</value>
+    <value>12, 217</value>
   </data>
-  <data name="btn_save.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 418</value>
+  <data name="&gt;&gt;txt_password.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="track_volume.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="&gt;&gt;lbl_url.Name" xml:space="preserve">
-    <value>lbl_url</value>
+  <data name="btn_unknown.Text" xml:space="preserve">
+    <value>Unknown</value>
   </data>
   <data name="&gt;&gt;btn_unreach_warn.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;txt_username.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btn_save.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>22</value>
   </data>
   <data name="txt_username.Location" type="System.Drawing.Point, System.Drawing">
     <value>207, 38</value>
   </data>
+  <data name="&gt;&gt;btn_down_crit.Name" xml:space="preserve">
+    <value>btn_down_crit</value>
+  </data>
   <data name="lbl_password.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;lbl_timer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="btn_unknown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>207, 350</value>
+    <value>207, 402</value>
   </data>
-  <data name="&gt;&gt;btn_unknown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lbl_password.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="lbl_username.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 41</value>
+  <data name="&gt;&gt;cdg_unknown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColorDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lbl_username.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>20</value>
   </data>
   <data name="&gt;&gt;lbl_url.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>21</value>
   </data>
   <data name="lbl_track_volume.Text" xml:space="preserve">
     <value>loudness</value>
   </data>
+  <data name="lbl_username.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 41</value>
+  </data>
   <data name="&gt;&gt;lbl_url.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="txt_password.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="lbl_username.Text" xml:space="preserve">
     <value>Username:</value>
@@ -653,11 +738,17 @@
   <data name="&gt;&gt;track_volume.Name" xml:space="preserve">
     <value>track_volume</value>
   </data>
+  <data name="&gt;&gt;chkHosts.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="cdg_unreach_warn.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>268, 17</value>
   </metadata>
   <metadata name="cdg_down_crit.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>138, 17</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>de-DE</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

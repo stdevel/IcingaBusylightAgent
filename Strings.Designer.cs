@@ -104,5 +104,23 @@ namespace IcingaBusylightAgent {
                 return ResourceManager.GetString("mnu_update", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die is active ähnelt.
+        /// </summary>
+        internal static string welcome_message {
+            get {
+                return ResourceManager.GetString("welcome_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Welcome ähnelt.
+        /// </summary>
+        internal static string welcome_title {
+            get {
+                return ResourceManager.GetString("welcome_title", resourceCulture);
+            }
+        }
     }
 }

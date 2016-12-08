@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Threading;
 //Localization
 using System.Resources;
+//Version
+using System.Reflection;
 
 namespace IcingaBusylightAgent
 {
@@ -29,6 +31,15 @@ namespace IcingaBusylightAgent
     public class AgentContext : ApplicationContext
     {
         private NotifyIcon trayIcon;
+        private Thread dataThread;
+
+        private void showTip(String title, String message, ToolTipIcon icon)
+        {
+            trayIcon.BalloonTipTitle = title;
+            trayIcon.BalloonTipText = message;
+            trayIcon.BalloonTipIcon = icon;
+            trayIcon.ShowBalloonTip(10000);
+        }
 
         public AgentContext()
         {
@@ -65,13 +76,20 @@ namespace IcingaBusylightAgent
                 IcingaBusylightAgent.Properties.Settings.Default.sound,
                 IcingaBusylightAgent.Properties.Settings.Default.sound_volume
                 );
-            Thread dataThread = new Thread(workerObject.updateData);
-
+            dataThread = new Thread(workerObject.updateData);
+            //Show tool-tip
+            Assembly assem = Assembly.GetEntryAssembly();
+            AssemblyName assemName = assem.GetName();
+            Version ver = assemName.Version;
+            showTip(rm.GetString("welcome_title"),
+                "Icinga Busylight Agent " + ver.ToString() + " " +
+            rm.GetString("welcome_message"), ToolTipIcon.Info);
         }
 
         void update(object sender, EventArgs e)
         {
             //TODO: Update data thread
+            dataThread.Start();
         }
 
         void about(object sender, EventArgs e)
