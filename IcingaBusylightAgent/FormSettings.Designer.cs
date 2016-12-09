@@ -56,6 +56,9 @@
             this.lbl_checks = new System.Windows.Forms.Label();
             this.chkHosts = new System.Windows.Forms.CheckBox();
             this.chkServices = new System.Windows.Forms.CheckBox();
+            this.lbl_soundfile = new System.Windows.Forms.Label();
+            this.btn_soundfile_set = new System.Windows.Forms.Button();
+            this.txt_soundfile = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).BeginInit();
             this.SuspendLayout();
@@ -200,10 +203,30 @@
             this.chkServices.Name = "chkServices";
             this.chkServices.UseVisualStyleBackColor = true;
             // 
+            // lbl_soundfile
+            // 
+            resources.ApplyResources(this.lbl_soundfile, "lbl_soundfile");
+            this.lbl_soundfile.Name = "lbl_soundfile";
+            // 
+            // btn_soundfile_set
+            // 
+            resources.ApplyResources(this.btn_soundfile_set, "btn_soundfile_set");
+            this.btn_soundfile_set.Name = "btn_soundfile_set";
+            this.btn_soundfile_set.UseVisualStyleBackColor = true;
+            // 
+            // txt_soundfile
+            // 
+            resources.ApplyResources(this.txt_soundfile, "txt_soundfile");
+            this.txt_soundfile.Name = "txt_soundfile";
+            this.txt_soundfile.UseSystemPasswordChar = true;
+            // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txt_soundfile);
+            this.Controls.Add(this.btn_soundfile_set);
+            this.Controls.Add(this.lbl_soundfile);
             this.Controls.Add(this.chkServices);
             this.Controls.Add(this.chkHosts);
             this.Controls.Add(this.lbl_checks);
@@ -268,6 +291,9 @@
         private System.Windows.Forms.Label lbl_checks;
         private System.Windows.Forms.CheckBox chkHosts;
         private System.Windows.Forms.CheckBox chkServices;
+        private System.Windows.Forms.Label lbl_soundfile;
+        private System.Windows.Forms.Button btn_soundfile_set;
+        private System.Windows.Forms.TextBox txt_soundfile;
     }
 }
 

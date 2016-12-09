@@ -106,7 +106,85 @@ namespace IcingaBusylightAgent
             return credentialCache;
         }
 
-        private String getHTMLResult(String url)
+        private String getHTMLPostResult(String url, String content)
+        {
+            //This function is proudly inspired by: http://stackoverflow.com/questions/16642196/get-html-code-from-website-in-c-sharp
+            System.Console.WriteLine("POST: '{0}' (Content: '{1}')", url, content);
+
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            try
+            {
+                //Create request
+                HttpWebRequest request = HttpWebRequest.CreateHttp(url);
+                
+                //Set headers
+                request.Headers["X-HTTP-Method-Override"] = "GET";
+                request.Method = WebRequestMethods.Http.Post;
+
+                //Set user-agent and credentials
+                //Proudly inspired by: http://stackoverflow.com/questions/4334521/c-sharp-httpwebrequest-using-basic-authentication
+                request.UserAgent = "IcingaBusylightAgent";
+                request.Credentials = createCredentials();
+
+                //Set payload and length
+                byte[] contentArray = Encoding.UTF8.GetBytes(content);
+                request.ContentLength = contentArray.Length;
+                request.ContentType = "application/json";
+
+                //Write to stream
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(contentArray, 0, contentArray.Length);
+                dataStream.Close();
+
+                //Get response
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                //Return String if valid result
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    //Create stream reader
+                    Stream receiveStream = response.GetResponseStream();
+                    StreamReader readStream = null;
+
+                    //Try to guess character set
+                    if (response.CharacterSet == "") { readStream = new StreamReader(receiveStream); }
+                    else { readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet)); }
+
+                    //Read data and close streams
+                    string data = readStream.ReadToEnd();
+                    response.Close();
+                    readStream.Close();
+                    return data;
+                }
+                else
+                {
+                    //Impossibru!
+                    return null;
+                    //throw new Exception("Impossibru");
+                }
+            }
+            catch (System.Net.WebException e)
+            {
+                //Could not access information
+                System.Console.WriteLine("Could not access information, error: {0}", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (System.ArgumentException e)
+            {
+                System.Console.WriteLine("Error: {0}", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Generic error: {0}", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+        }
+
+        private String getHTMLGetResult(String url)
         {
             //This function is proudly inspired by: http://stackoverflow.com/questions/16642196/get-html-code-from-website-in-c-sharp
 
@@ -148,24 +226,29 @@ namespace IcingaBusylightAgent
                 else
                 {
                     //Impossibru!
-                    throw new Exception("Impossibru");
+                    System.Console.WriteLine("HTTP status is '{0}'", response.StatusCode);
+                    return null;
+                    //throw new Exception("Impossibru");
                 }
             }
             catch(System.Net.WebException e)
             {
                 //Could not access information
                 System.Console.WriteLine("Could not access information, error: {0}", e.Message);
-                throw new Exception("Impossibru");
+                return null;
+                //throw new Exception("Impossibru");
             }
             catch(System.ArgumentException e)
             {
                 System.Console.WriteLine("Error: {0}", e.Message);
-                throw new Exception("Impossibru");
+                return null;
+                //throw new Exception("Impossibru");
             }
             catch
             {
                 //Impossibru!
-                throw new Exception("Impossibru");
+                return null;
+                //throw new Exception("Impossibru");
             }
         }
 
@@ -173,14 +256,15 @@ namespace IcingaBusylightAgent
         {
             //Update host information
             System.Console.WriteLine("Updating host information");
+            string result = "";
+
             try
             {
                 //Get result
-                string result = getHTMLResult(this.url + "v1/objects/hosts?filter=host.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
+                result = getHTMLPostResult(this.url + "v1/objects/hosts", "{ \"type\": \"Host\", \"filter\": \"host.state!=0 && host.acknowledgement==0\", \"attrs\": [ \"name\", \"state\", \"acknowledgement\" ] }");
                 //BOO: Removing root level as I'm too lame to do this nicer...
                 result = result.Substring(11, (result.Length - 12));
-                System.Console.WriteLine("GET: {0}", this.url + "v1/objects/hosts?filter=host.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
-                System.Console.WriteLine(result);
+                System.Console.WriteLine("RESULT: '{0}'", result);
                 //Try to deserialize objects
                 var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
                 foreach (apiDataset entry in datasetList)
@@ -193,8 +277,22 @@ namespace IcingaBusylightAgent
             catch (UriFormatException e)
             {
                 //Connection could not be openend - URL invalid/host down?
-                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message);
-                throw new Exception("Impossibru");
+                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message);      
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                //No hosts
+                System.Console.WriteLine("No hosts found matching conditions! ('{0}', '{1}')", e.Message, result);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Generic error: '{0}'", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
             }
         }
 
@@ -202,14 +300,15 @@ namespace IcingaBusylightAgent
         {
             //Update service information
             System.Console.WriteLine("Updating service information");
+            string result = "";
+
             try
             {
                 //Get result
-                string result = getHTMLResult(this.url + "v1/objects/services?filter=service.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
+                result = getHTMLPostResult(this.url + "v1/objects/services", "{ \"type\": \"Service\", \"filter\": \"service.state!=0 && service.acknowledgement==0\", \"attrs\": [ \"name\", \"state\", \"acknowledgement\" ] }");
                 //BOO: Removing root level as I'm too lame to do this nicer...
                 result = result.Substring(11, (result.Length - 12));
-                System.Console.WriteLine("GET: {0}", this.url + "v1/objects/services?filter=service.state!=0&attrs=name&attrs=state&attrs=acknowledgement");
-                System.Console.WriteLine(result);
+                System.Console.WriteLine("RESULT: '{0}'", result);
                 //Try to deserialize objects
                 var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
                 foreach (apiDataset entry in datasetList)
@@ -223,7 +322,21 @@ namespace IcingaBusylightAgent
             {
                 //Connection could not be openend - URL invalid/host down?
                 System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/services", e.Message);
-                throw new Exception("Impossibru");
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                //No services
+                System.Console.WriteLine("No services found matching conditions! ('{0}', '{1}')", e.Message, result);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Generic error: '{0}'", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
             }
         }
 
@@ -240,72 +353,93 @@ namespace IcingaBusylightAgent
                 //Initializing Busylight
                 var controller = new Busylight.SDK();
 
-                //Check host information if requested
-                if(Properties.Settings.Default.icinga_check_hosts == true)
-                {
-                    //Get host information
-                    List<apiDataset> hostData = updateHosts();
-
-                    //Filter for non-acknowledged information
-                    //Proudly inspired by: http://stackoverflow.com/questions/26196/filtering-collections-in-c-sharp
-                    foreach (apiDataset entry in hostData.Where(entry => (entry.attrs.acknowledgement == 0.0)))
+                    //Check host information if requested
+                    if (Properties.Settings.Default.icinga_check_hosts == true)
                     {
-                        //dump result
-                        System.Console.WriteLine("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
-                        if (entry.attrs.state == 3)
+                        try
                         {
-                            //unknown
-                            targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
+                            //Get host information
+                            List<apiDataset> hostData = updateHosts();
+                            foreach (apiDataset entry in hostData)
+                            {
+                                //dump result
+                                System.Console.WriteLine("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
+                                if (entry.attrs.state == 3)
+                                {
+                                    //unknown
+                                    targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
+                                }
+                                else if (entry.attrs.state == 2)
+                                {
+                                    //critical
+                                    targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
+                                }
+                                else
+                                {
+                                    //warning
+                                    targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
+                                }
+                                System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                                controller.Jingle(targetColor, this.sound, this.volume);
+                                Thread.Sleep(5000);
+                                controller.Terminate();
+                            }
                         }
-                        else if (entry.attrs.state == 2)
+                        catch (ArgumentNullException e)
                         {
-                            //critical
-                            targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
+                            //Empty dataset
+                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
                         }
-                        else
+                        catch (NullReferenceException e)
                         {
-                            //warning
-                            targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
+                            //Empty dataset
+                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
                         }
-                        System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
-                        controller.Jingle(targetColor, this.sound, this.volume);
-                        Thread.Sleep(5000);
-                        controller.Terminate();
                     }
-                }
 
-                //Check service information if requested
-                if(Properties.Settings.Default.icinga_check_services == true)
-                {
-                    //Get service information
-                    List<apiDataset> serviceData = updateServices();
-
-                    //Filter for non-acknowledged information
-                    //Proudly inspired by: http://stackoverflow.com/questions/26196/filtering-collections-in-c-sharp
-                    foreach (apiDataset entry in serviceData.Where(entry => (entry.attrs.acknowledgement == 0.0)))
+                    //Check service information if requested
+                    if (Properties.Settings.Default.icinga_check_services == true)
                     {
-                        //dump result
-                        System.Console.WriteLine("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
-                        if(entry.attrs.state == 3)
+                        try
                         {
-                            //unknown
-                            targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
+
+                            //Get service information
+                            List<apiDataset> serviceData = updateServices();
+                            foreach (apiDataset entry in serviceData)
+                            {
+                                    //dump result
+                                    System.Console.WriteLine("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
+                                    if (entry.attrs.state == 3)
+                                    {
+                                        //unknown
+                                        targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
+                                    }
+                                    else if (entry.attrs.state == 2)
+                                    {
+                                        //critical
+                                        targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
+                                    }
+                                    else
+                                    {
+                                        //warning
+                                        targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
+                                    }
+                                    System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                                    controller.Jingle(targetColor, this.sound, this.volume);
+                                    Thread.Sleep(5000);
+                                    controller.Terminate();
+                                }
+                            }
+                       catch (ArgumentNullException e)
+                       {
+                            //Empty dataset
+                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
                         }
-                        else if(entry.attrs.state == 2)
+                        catch (NullReferenceException e)
                         {
-                            //critical
-                            targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
+                            //Empty dataset
+                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
                         }
-                        else
-                        {
-                            //warning
-                            targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
-                        }
-                        System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
-                        controller.Jingle(targetColor, this.sound, this.volume);
-                        Thread.Sleep(5000);
-                        controller.Terminate();
-                    }
                 }
 
             }

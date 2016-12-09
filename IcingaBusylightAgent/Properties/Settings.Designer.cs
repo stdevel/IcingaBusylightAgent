@@ -178,5 +178,17 @@ namespace IcingaBusylightAgent.Properties {
                 this["icinga_check_services"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string sound_file {
+            get {
+                return ((string)(this["sound_file"]));
+            }
+            set {
+                this["sound_file"] = value;
+            }
+        }
     }
 }
