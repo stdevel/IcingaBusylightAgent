@@ -190,5 +190,29 @@ namespace IcingaBusylightAgent.Properties {
                 this["sound_file"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string icinga_hostgroups {
+            get {
+                return ((string)(this["icinga_hostgroups"]));
+            }
+            set {
+                this["icinga_hostgroups"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string icinga_hosts {
+            get {
+                return ((string)(this["icinga_hosts"]));
+            }
+            set {
+                this["icinga_hosts"] = value;
+            }
+        }
     }
 }

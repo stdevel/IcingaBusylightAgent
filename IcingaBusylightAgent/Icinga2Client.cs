@@ -14,6 +14,10 @@ using System.Data;
 //Busylight
 using Busylight;
 using System.Drawing;
+//MessageBox
+using System.Windows.Forms;
+//Sound
+using System.Media;
 
 namespace IcingaBusylightAgent
 {
@@ -29,6 +33,7 @@ namespace IcingaBusylightAgent
     {
         public double acknowledgement { get; set; }
         public String name { get; set; }
+        public String display_name { get; set; }
         public double state { get; set; }
     }
 
@@ -39,7 +44,9 @@ namespace IcingaBusylightAgent
         private String username;
         private String password;
         private int updateInterval;
-        private Timer updateTimer;
+        private System.Threading.Timer updateTimer;
+        private String sound_file = "";
+        private SoundPlayer player;
 
         //Notification variables
         Color color_up_ok, color_down_crit, color_unreach_warn, color_unknown;
@@ -69,6 +76,13 @@ namespace IcingaBusylightAgent
         public BusylightJingleClip getSound() { return this.sound; }
         public void setVolume(BusylightVolume new_vol) { this.volume = new_vol; }
         public BusylightVolume getVolume() { return this.volume; }
+        public void setSoundfile(String new_file)
+        {
+            System.Console.WriteLine("Notifcation sound set to: '{0}'", new_file);
+            this.sound_file = new_file;
+            player = new SoundPlayer(new_file);
+        }
+        public String getSoundfile() { return this.sound_file; }
 
         public Icinga2Client(String url, String username, String password, int interval,
             Color upOk, Color downCrit, Color unreach, Color unknown,
@@ -91,8 +105,14 @@ namespace IcingaBusylightAgent
 
             //Set timer
             updateTimer = new System.Threading.Timer(updateData, null, interval, interval);
-
             System.Console.WriteLine("Yes, this is Icinga2Client: URL='{0}', username='{1}', interval='{2}'", getUrl(), getUsername(), getInterval());
+
+            //Enable SoundPlayer
+            if(this.sound_file != "") { player = new SoundPlayer(this.sound_file); }
+
+            //INVENTORY TEST
+            //getInventory("HostGroup");
+            //getInventory("Host", "", new String[] { "name", "display_name", "state", "acknowledgement" });
         }
 
         private CredentialCache createCredentials()
@@ -104,6 +124,82 @@ namespace IcingaBusylightAgent
                 IcingaBusylightAgent.Properties.Settings.Default.icinga_pass
                 ));
             return credentialCache;
+        }
+
+        public List<apiDataset> getInventory(String type = "Hosts", String filter = "", String[] attributes = null)
+        {
+            //Set default attributes if none given
+            attributes = attributes ?? new string[] { "name", "display_name" };
+
+            //Return hostgroups
+            System.Console.WriteLine("Retrieving objects '{0}' with filter '{1}' and attributes '{2}'", type, filter, string.Join(", ", attributes));
+            string result = "";
+            string post = "";
+
+            try
+            {
+                //Setup URL prefix based on type
+                String url_prefix="";
+                switch(type)
+                {
+                    case "Host":
+                        url_prefix = "hosts";
+                        break;
+                    case "HostGroup":
+                        url_prefix = "hostgroups";
+                        break;
+                    case "Service":
+                        url_prefix = "services";
+                        break;
+                }
+                System.Console.WriteLine("URL prefix is '{0}'", url_prefix);
+
+                //Get result
+                String attrs = "";
+                foreach(String attribute in attributes)
+                {
+                    if (attrs == "") { attrs = "\"" + attribute + "\""; }
+                    else { attrs = attrs + ", \"" + attribute + "\""; }
+                }
+
+                //Set POST data
+                post = "{ \"type\": \"" + type + "\"";
+                if(filter != "") { post = post + ", \"filter\": \"" + filter + "\""; }
+                post = post + ", \"attrs\": [ " + attrs + " ] }";
+                //Get result
+                result = getHTMLPostResult(this.url + "v1/objects/" + url_prefix, post);
+                //BOO: Removing root level as I'm too lame to do this nicer...
+                result = result.Substring(11, (result.Length - 12));
+                System.Console.WriteLine("RESULT: '{0}'", result);
+                //Try to deserialize objects
+                var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
+                foreach (apiDataset entry in datasetList)
+                {
+                    //dump result
+                    System.Console.WriteLine("Name: '{0}', Type: '{1}', Display Name: '{2}', State: '{3}', Acknowledgement: '{4}'", entry.name, entry.type, entry.attrs.display_name, entry.attrs.state, entry.attrs.acknowledgement);
+                }
+                return datasetList;
+            }
+            catch (UriFormatException e)
+            {
+                //Connection could not be openend - URL invalid/host down?
+                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                //No hosts
+                System.Console.WriteLine("No hosts found matching conditions! ('{0}', '{1}')", e.Message, result);
+                return null;
+                //throw new Exception("Impossibru");
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Generic error: '{0}'", e.Message);
+                return null;
+                //throw new Exception("Impossibru");
+            }
         }
 
         private String getHTMLPostResult(String url, String content)
@@ -257,6 +353,7 @@ namespace IcingaBusylightAgent
             //Update host information
             System.Console.WriteLine("Updating host information");
             string result = "";
+            //TODO: migrate to getInventory() function
 
             try
             {
@@ -343,15 +440,18 @@ namespace IcingaBusylightAgent
         public void updateData(object state)
         {
             //Update data
-            System.Console.WriteLine("Updating data thread...");
 
-            //Variables
-            BusylightColor targetColor;
+            try
+            {
+                System.Console.WriteLine("Updating data thread...");
 
-            lock (this)
-            {  
-                //Initializing Busylight
-                var controller = new Busylight.SDK();
+                //Variables
+                BusylightColor targetColor;
+
+                lock (this)
+                {
+                    //Initializing Busylight
+                    var controller = new Busylight.SDK();
 
                     //Check host information if requested
                     if (Properties.Settings.Default.icinga_check_hosts == true)
@@ -362,7 +462,7 @@ namespace IcingaBusylightAgent
                             List<apiDataset> hostData = updateHosts();
                             foreach (apiDataset entry in hostData)
                             {
-                                //dump result
+                                //Unacknowledged alert
                                 System.Console.WriteLine("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
                                 if (entry.attrs.state == 3)
                                 {
@@ -380,6 +480,9 @@ namespace IcingaBusylightAgent
                                     targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
                                 }
                                 System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                                //Play sound
+                                if (this.sound_file != "") { player.Play(); }
+                                //Flash light
                                 controller.Jingle(targetColor, this.sound, this.volume);
                                 Thread.Sleep(5000);
                                 controller.Terminate();
@@ -407,31 +510,34 @@ namespace IcingaBusylightAgent
                             List<apiDataset> serviceData = updateServices();
                             foreach (apiDataset entry in serviceData)
                             {
-                                    //dump result
-                                    System.Console.WriteLine("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
-                                    if (entry.attrs.state == 3)
-                                    {
-                                        //unknown
-                                        targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
-                                    }
-                                    else if (entry.attrs.state == 2)
-                                    {
-                                        //critical
-                                        targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
-                                    }
-                                    else
-                                    {
-                                        //warning
-                                        targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
-                                    }
-                                    System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
-                                    controller.Jingle(targetColor, this.sound, this.volume);
-                                    Thread.Sleep(5000);
-                                    controller.Terminate();
+                                //Unacknowledged alert
+                                System.Console.WriteLine("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
+                                if (entry.attrs.state == 3)
+                                {
+                                    //unknown
+                                    targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
                                 }
+                                else if (entry.attrs.state == 2)
+                                {
+                                    //critical
+                                    targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
+                                }
+                                else
+                                {
+                                    //warning
+                                    targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
+                                }
+                                System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                                //Play sound
+                                if (this.sound_file != "") { player.Play(); }
+                                //Flash light
+                                controller.Jingle(targetColor, this.sound, this.volume);
+                                Thread.Sleep(5000);
+                                controller.Terminate();
                             }
-                       catch (ArgumentNullException e)
-                       {
+                        }
+                        catch (ArgumentNullException e)
+                        {
                             //Empty dataset
                             System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
                         }
@@ -440,8 +546,20 @@ namespace IcingaBusylightAgent
                             //Empty dataset
                             System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
                         }
+                    }
+
                 }
 
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Console.WriteLine("Unable to connect to Icinga2 instance");
             }
         }
 

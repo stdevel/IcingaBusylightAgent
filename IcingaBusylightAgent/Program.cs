@@ -76,6 +76,9 @@ namespace IcingaBusylightAgent
                 IcingaBusylightAgent.Properties.Settings.Default.sound,
                 IcingaBusylightAgent.Properties.Settings.Default.sound_volume
                 );
+            //Set sound file
+            workerObject.setSoundfile(Properties.Settings.Default.sound_file);
+            
             dataThread = new Thread(workerObject.updateData);
             //Show tool-tip
             Assembly assem = Assembly.GetEntryAssembly();

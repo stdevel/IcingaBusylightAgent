@@ -178,6 +178,12 @@
   <data name="btn_soundfile_set.Text" xml:space="preserve">
     <value>Wählen</value>
   </data>
+  <data name="btn_validate.Text" xml:space="preserve">
+    <value>Validieren</value>
+  </data>
+  <data name="ofd_sound.Filter" xml:space="preserve">
+    <value>Sound-Dateien|*.wav</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Einstellungen</value>
   </data>

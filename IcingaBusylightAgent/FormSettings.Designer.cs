@@ -59,6 +59,10 @@
             this.lbl_soundfile = new System.Windows.Forms.Label();
             this.btn_soundfile_set = new System.Windows.Forms.Button();
             this.txt_soundfile = new System.Windows.Forms.TextBox();
+            this.btn_validate = new System.Windows.Forms.Button();
+            this.lbl_filter = new System.Windows.Forms.Label();
+            this.lbox_hostgroups = new System.Windows.Forms.ListBox();
+            this.ofd_sound = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).BeginInit();
             this.SuspendLayout();
@@ -103,11 +107,11 @@
             // 
             // box_sound
             // 
-            resources.ApplyResources(this.box_sound, "box_sound");
             this.box_sound.FormattingEnabled = true;
             this.box_sound.Items.AddRange(new object[] {
             resources.GetString("box_sound.Items"),
             resources.GetString("box_sound.Items1")});
+            resources.ApplyResources(this.box_sound, "box_sound");
             this.box_sound.Name = "box_sound";
             this.box_sound.SelectedIndexChanged += new System.EventHandler(this.box_sound_SelectedIndexChanged);
             // 
@@ -156,8 +160,8 @@
             // 
             // track_volume
             // 
-            resources.ApplyResources(this.track_volume, "track_volume");
             this.track_volume.LargeChange = 1;
+            resources.ApplyResources(this.track_volume, "track_volume");
             this.track_volume.Maximum = 4;
             this.track_volume.Name = "track_volume";
             this.track_volume.Scroll += new System.EventHandler(this.track_volume_Scroll);
@@ -213,17 +217,44 @@
             resources.ApplyResources(this.btn_soundfile_set, "btn_soundfile_set");
             this.btn_soundfile_set.Name = "btn_soundfile_set";
             this.btn_soundfile_set.UseVisualStyleBackColor = true;
+            this.btn_soundfile_set.Click += new System.EventHandler(this.btn_soundfile_set_Click);
             // 
             // txt_soundfile
             // 
             resources.ApplyResources(this.txt_soundfile, "txt_soundfile");
             this.txt_soundfile.Name = "txt_soundfile";
-            this.txt_soundfile.UseSystemPasswordChar = true;
+            // 
+            // btn_validate
+            // 
+            resources.ApplyResources(this.btn_validate, "btn_validate");
+            this.btn_validate.Name = "btn_validate";
+            this.btn_validate.UseVisualStyleBackColor = true;
+            this.btn_validate.Click += new System.EventHandler(this.btn_validate_Click);
+            // 
+            // lbl_filter
+            // 
+            resources.ApplyResources(this.lbl_filter, "lbl_filter");
+            this.lbl_filter.Name = "lbl_filter";
+            // 
+            // lbox_hostgroups
+            // 
+            this.lbox_hostgroups.FormattingEnabled = true;
+            resources.ApplyResources(this.lbox_hostgroups, "lbox_hostgroups");
+            this.lbox_hostgroups.Name = "lbox_hostgroups";
+            this.lbox_hostgroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            // 
+            // ofd_sound
+            // 
+            this.ofd_sound.FileName = "openFileDialog1";
+            resources.ApplyResources(this.ofd_sound, "ofd_sound");
             // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lbox_hostgroups);
+            this.Controls.Add(this.lbl_filter);
+            this.Controls.Add(this.btn_validate);
             this.Controls.Add(this.txt_soundfile);
             this.Controls.Add(this.btn_soundfile_set);
             this.Controls.Add(this.lbl_soundfile);
@@ -294,6 +325,10 @@
         private System.Windows.Forms.Label lbl_soundfile;
         private System.Windows.Forms.Button btn_soundfile_set;
         private System.Windows.Forms.TextBox txt_soundfile;
+        private System.Windows.Forms.Button btn_validate;
+        private System.Windows.Forms.Label lbl_filter;
+        private System.Windows.Forms.ListBox lbox_hostgroups;
+        private System.Windows.Forms.OpenFileDialog ofd_sound;
     }
 }
 

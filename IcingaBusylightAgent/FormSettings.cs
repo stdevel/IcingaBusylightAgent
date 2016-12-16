@@ -34,6 +34,9 @@ namespace IcingaBusylightAgent
         //Translate _all_ the strings!
         ResourceManager rm = Strings.ResourceManager;
 
+        //Icinga2 client
+        Icinga2Client demoClient;
+
         public FormSettings()
         {
             InitializeComponent();
@@ -41,34 +44,56 @@ namespace IcingaBusylightAgent
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            //Preselect Icinga settings
-            txt_url.Text = Properties.Settings.Default.icinga_url;
-            txt_username.Text = Properties.Settings.Default.icinga_user;
-            txt_password.Text = Properties.Settings.Default.icinga_pass;
-            track_timer.Value = (Properties.Settings.Default.icinga_update_interval/60);
-            lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
-            chkHosts.Checked = Properties.Settings.Default.icinga_check_hosts;
-            chkServices.Checked = Properties.Settings.Default.icinga_check_services;
+            //Pre-select Icinga settings
+            try
+            {
+                txt_url.Text = Properties.Settings.Default.icinga_url;
+                txt_username.Text = Properties.Settings.Default.icinga_user;
+                txt_password.Text = Properties.Settings.Default.icinga_pass;
+                track_timer.Value = Properties.Settings.Default.icinga_update_interval;
+                lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
+                chkHosts.Checked = Properties.Settings.Default.icinga_check_hosts;
+                chkServices.Checked = Properties.Settings.Default.icinga_check_services;
+                txt_soundfile.Text = Properties.Settings.Default.sound_file;
 
-            //Preselect color items
-            btn_up_ok.BackColor = Properties.Settings.Default.color_up_ok;
-            btn_unreach_warn.BackColor = Properties.Settings.Default.color_unreach_warn;
-            btn_down_crit.BackColor = Properties.Settings.Default.color_down_crit;
-            btn_unknown.BackColor = Properties.Settings.Default.color_unknown;
-            cdg_up_ok.Color = Properties.Settings.Default.color_up_ok;
-            cdg_unreach_warn.Color = Properties.Settings.Default.color_unreach_warn;
-            cdg_down_crit.Color = Properties.Settings.Default.color_down_crit;
-            cdg_unknown.Color = Properties.Settings.Default.color_unknown;
+                //Pre-select color items
+                btn_up_ok.BackColor = Properties.Settings.Default.color_up_ok;
+                btn_unreach_warn.BackColor = Properties.Settings.Default.color_unreach_warn;
+                btn_down_crit.BackColor = Properties.Settings.Default.color_down_crit;
+                btn_unknown.BackColor = Properties.Settings.Default.color_unknown;
+                cdg_up_ok.Color = Properties.Settings.Default.color_up_ok;
+                cdg_unreach_warn.Color = Properties.Settings.Default.color_unreach_warn;
+                cdg_down_crit.Color = Properties.Settings.Default.color_down_crit;
+                cdg_unknown.Color = Properties.Settings.Default.color_unknown;
 
-            //Preselect sound items
-            box_sound.SelectedItem = Properties.Settings.Default.sound.ToString();
-            track_volume.Value = this.dictVol.FirstOrDefault(x => x.Value == Properties.Settings.Default.sound_volume).Key;
-            lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
+                //Pre-select sound items
+                box_sound.SelectedItem = Properties.Settings.Default.sound.ToString();
+                track_volume.Value = this.dictVol.FirstOrDefault(x => x.Value == Properties.Settings.Default.sound_volume).Key;
+                lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
+
+                //Validate
+                validateSettings();
+
+                //Pre-select listbox items
+                System.Console.WriteLine("Hostgroup filter is '{0}'", Properties.Settings.Default.icinga_hostgroups);
+                for(int i=0; i < lbox_hostgroups.Items.Count; i++)
+                {
+                    if (Properties.Settings.Default.icinga_hostgroups.Contains( lbox_hostgroups.Items[i].ToString().Substring(0, lbox_hostgroups.Items[i].ToString().IndexOf(" ")) ))
+                    {
+                        System.Console.WriteLine("Pre-selecting item '{0}'", lbox_hostgroups.Items[i].ToString());
+                        lbox_hostgroups.SetSelected(i, true);
+                    }
+                }
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                System.Console.WriteLine("Unable to pre-select settings, might by fscked up or unset");
+            }
         }
 
-        private void btn_save_Click(object sender, EventArgs e)
+        private void saveSettings()
         {
-            //TODO: Validate settings - attach / for URL?
+            //Save _all_ the settings
 
             //Set Icinga settings
             Properties.Settings.Default.icinga_url = txt_url.Text;
@@ -77,20 +102,99 @@ namespace IcingaBusylightAgent
             Properties.Settings.Default.icinga_update_interval = track_timer.Value;
             Properties.Settings.Default.icinga_check_hosts = chkHosts.Checked;
             Properties.Settings.Default.icinga_check_services = chkServices.Checked;
+
+            //Set hostgroup filter
+            String new_filter = "";
+            String temp = null;
+            for(int i=0; i < lbox_hostgroups.SelectedItems.Count; i++)
+            {
+                temp = lbox_hostgroups.SelectedItems[i].ToString();
+                temp = temp.Substring(0, temp.IndexOf(" "));     
+                System.Console.WriteLine("Adding entry to hostgroup filter: '{0}'", temp);
+                if (new_filter == "") { new_filter = temp; }
+                else { new_filter = new_filter + ";" + temp; }
+            }
+            Properties.Settings.Default.icinga_hostgroups = new_filter;
+
             //Set colors
             Properties.Settings.Default.color_up_ok = cdg_up_ok.Color;
             Properties.Settings.Default.color_unreach_warn = cdg_unreach_warn.Color;
             Properties.Settings.Default.color_down_crit = cdg_down_crit.Color;
             Properties.Settings.Default.color_unknown = cdg_unknown.Color;
-            Properties.Settings.Default.icinga_update_interval = (track_timer.Value * 60);
+            Properties.Settings.Default.icinga_update_interval = track_timer.Value;
+
             //Set sound and volume
             Properties.Settings.Default.sound = this.dictSound[box_sound.SelectedItem.ToString()];
             Properties.Settings.Default.sound_volume = this.dictVol[track_volume.Value];
+            Properties.Settings.Default.sound_file = txt_soundfile.Text;
+
             //Save changes
             Properties.Settings.Default.Save();
 
-            System.Console.WriteLine("Saved settings, going home!");
-            this.Close();
+            System.Console.WriteLine("Saved settings!");
+        }
+
+        private void validateSettings()
+        {
+            //Validate settings and pre-select listbox items
+
+            //Test login
+            demoClient = new Icinga2Client(
+               txt_url.Text,
+               txt_username.Text,
+               txt_password.Text,
+               (track_timer.Value * 1000 * 60),
+               cdg_up_ok.Color,
+               cdg_down_crit.Color,
+               cdg_unreach_warn.Color,
+               cdg_unknown.Color,
+               this.dictSound[box_sound.SelectedItem.ToString()],
+               this.dictVol[track_volume.Value]
+               );
+
+            //Retrieve hostgroups
+            try
+            {
+                List<apiDataset> hostgroups = demoClient.getInventory("HostGroup");
+                foreach (apiDataset entry in hostgroups)
+                {
+                    //add entry
+                    lbox_hostgroups.Items.Add(entry.name + " (" + entry.attrs.display_name + ")");
+                }
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+            }
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Validate settings
+                validateSettings();
+
+                //Save settings
+                saveSettings();
+                this.Close();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+            }
         }
 
         private void btn_up_ok_Click(object sender, EventArgs e)
@@ -189,10 +293,27 @@ namespace IcingaBusylightAgent
 
         private void track_timer_Scroll(object sender, EventArgs e)
         {
-            System.Console.WriteLine("Timer is '{0}', value will be '{1}'", track_timer.Value, (track_timer.Value * 60));
+            System.Console.WriteLine("Timer is '{0}'", track_timer.Value);
 
             //Set label
             lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
+        }
+
+        private void btn_validate_Click(object sender, EventArgs e)
+        {
+            //Validate settings
+            validateSettings();
+        }
+
+        private void btn_soundfile_set_Click(object sender, EventArgs e)
+        {
+            //Open file
+            DialogResult result = ofd_sound.ShowDialog();
+            if(result == DialogResult.OK)
+            {
+                //Valid file selected
+                txt_soundfile.Text = ofd_sound.FileName;
+            }
         }
     }
 }
