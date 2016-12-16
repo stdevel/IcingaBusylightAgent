@@ -22,7 +22,7 @@ To configure the agent, you need to specify the following settings:
 - API username
 - API password
 
-A configure dialog is started by right-clicking the trayicon and clicking ``Configure``.
+A configure dialog is started by right-clicking the trayicon and clicking ``Configure``. This dialog also gives you additional possibilities for customization (*e.g. sounds, colors, hostgroup filters,...*).
 
 To create an Icinga2 API user, create a configuration file like this on your Icinga2 server:
 ```
