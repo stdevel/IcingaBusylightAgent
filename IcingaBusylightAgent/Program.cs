@@ -87,6 +87,9 @@ namespace IcingaBusylightAgent
             showTip(rm.GetString("welcome_title"),
                 "Icinga Busylight Agent " + ver.ToString() + " " +
             rm.GetString("welcome_message"), ToolTipIcon.Info);
+
+            //Initialize log
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Application startup completed at {0}", DateTime.Now.ToString()), Properties.Settings.Default.log_level, 2);
         }
 
         void update(object sender, EventArgs e)

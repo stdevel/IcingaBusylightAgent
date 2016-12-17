@@ -18,6 +18,8 @@ using System.Drawing;
 using System.Windows.Forms;
 //Sound
 using System.Media;
+//Localization
+using System.Resources;
 
 namespace IcingaBusylightAgent
 {
@@ -39,6 +41,9 @@ namespace IcingaBusylightAgent
 
     class Icinga2Client
     {
+        //Translate _all_ the strings!
+        ResourceManager rm = Strings.ResourceManager;
+
         //Icinga2 variables
         private String url;
         private String username;
@@ -78,9 +83,12 @@ namespace IcingaBusylightAgent
         public BusylightVolume getVolume() { return this.volume; }
         public void setSoundfile(String new_file)
         {
-            System.Console.WriteLine("Notifcation sound set to: '{0}'", new_file);
-            this.sound_file = new_file;
-            player = new SoundPlayer(new_file);
+            if (new_file != "")
+            {
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Notification sound set to: '{0}'", new_file), Properties.Settings.Default.log_level, 2);
+                this.sound_file = new_file;
+                player = new SoundPlayer(new_file);
+            }
         }
         public String getSoundfile() { return this.sound_file; }
 
@@ -105,10 +113,10 @@ namespace IcingaBusylightAgent
 
             //Set timer
             updateTimer = new System.Threading.Timer(updateData, null, interval, interval);
-            System.Console.WriteLine("Yes, this is Icinga2Client: URL='{0}', username='{1}', interval='{2}'", getUrl(), getUsername(), getInterval());
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Yes, this is Icinga2Client: URL='{0}', username='{1}', interval='{2}'", getUrl(), getUsername(), getInterval()), Properties.Settings.Default.log_level, 2);
 
             //Enable SoundPlayer
-            if(this.sound_file != "") { player = new SoundPlayer(this.sound_file); }
+            if (this.sound_file != "") { player = new SoundPlayer(this.sound_file); }
 
             //INVENTORY TEST
             //getInventory("HostGroup");
@@ -132,7 +140,7 @@ namespace IcingaBusylightAgent
             attributes = attributes ?? new string[] { "name", "display_name" };
 
             //Return hostgroups
-            System.Console.WriteLine("Retrieving objects '{0}' with filter '{1}' and attributes '{2}'", type, filter, string.Join(", ", attributes));
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Retrieving objects '{0}' with filter '{1}' and attributes '{2}'", type, filter, string.Join(", ", attributes)), Properties.Settings.Default.log_level, 2);
             string result = "";
             string post = "";
 
@@ -152,51 +160,55 @@ namespace IcingaBusylightAgent
                         url_prefix = "services";
                         break;
                 }
-                System.Console.WriteLine("URL prefix is '{0}'", url_prefix);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("URL prefix is '{0}'", url_prefix), Properties.Settings.Default.log_level, 2);
 
                 //Get result
                 String attrs = "";
                 foreach(String attribute in attributes)
                 {
-                    if (attrs == "") { attrs = "\"" + attribute + "\""; }
-                    else { attrs = attrs + ", \"" + attribute + "\""; }
+                    if (attrs == "") { attrs = String.Format("\"{0}\"", attribute); }
+                    else { attrs = String.Format("{0}, \"{1}\"", attrs, attribute); }
                 }
 
                 //Set POST data
                 post = "{ \"type\": \"" + type + "\"";
                 if(filter != "") { post = post + ", \"filter\": \"" + filter + "\""; }
                 post = post + ", \"attrs\": [ " + attrs + " ] }";
+                /*post = String.Format("{ \"type\": \"{0}\"", type);
+                if(filter != "") { post = String.Format("{0}, \"filter\": \"{1}\"", post, filter); }
+                post = String.Format("{0}, \"attrs\": [ {1} ] }", post, attrs);*/
                 //Get result
                 result = getHTMLPostResult(this.url + "v1/objects/" + url_prefix, post);
                 //BOO: Removing root level as I'm too lame to do this nicer...
                 result = result.Substring(11, (result.Length - 12));
-                System.Console.WriteLine("RESULT: '{0}'", result);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("RESULT: '{0}'", result), Properties.Settings.Default.log_level, 2);
                 //Try to deserialize objects
                 var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
                 foreach (apiDataset entry in datasetList)
                 {
                     //dump result
-                    System.Console.WriteLine("Name: '{0}', Type: '{1}', Display Name: '{2}', State: '{3}', Acknowledgement: '{4}'", entry.name, entry.type, entry.attrs.display_name, entry.attrs.state, entry.attrs.acknowledgement);
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Name: '{0}', Type: '{1}', Display Name: '{2}', State: '{3}', Acknowledgement: '{4}'",
+                        entry.name, entry.type, entry.attrs.display_name, entry.attrs.state, entry.attrs.acknowledgement), Properties.Settings.Default.log_level, 2);
                 }
                 return datasetList;
             }
             catch (UriFormatException e)
             {
                 //Connection could not be openend - URL invalid/host down?
-                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (ArgumentOutOfRangeException e)
             {
                 //No hosts
-                System.Console.WriteLine("No hosts found matching conditions! ('{0}', '{1}')", e.Message, result);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("No hosts found matching conditions! ('{0}', '{1}')", e.Message, result), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("Generic error: '{0}'", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Generic error: '{0}'", e.Message), Properties.Settings.Default.log_level, 0);
                 return null;
                 //throw new Exception("Impossibru");
             }
@@ -205,7 +217,7 @@ namespace IcingaBusylightAgent
         private String getHTMLPostResult(String url, String content)
         {
             //This function is proudly inspired by: http://stackoverflow.com/questions/16642196/get-html-code-from-website-in-c-sharp
-            System.Console.WriteLine("POST: '{0}' (Content: '{1}')", url, content);
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("POST: '{0}' (Content: '{1}')", url, content), Properties.Settings.Default.log_level, 2);
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
@@ -262,19 +274,19 @@ namespace IcingaBusylightAgent
             catch (System.Net.WebException e)
             {
                 //Could not access information
-                System.Console.WriteLine("Could not access information, error: {0}", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Could not access information, error: {0}", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (System.ArgumentException e)
             {
-                System.Console.WriteLine("Error: {0}", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Error: {0}", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("Generic error: {0}", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Generic error: {0}", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
@@ -322,7 +334,7 @@ namespace IcingaBusylightAgent
                 else
                 {
                     //Impossibru!
-                    System.Console.WriteLine("HTTP status is '{0}'", response.StatusCode);
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("HTTP status is '{0}'", response.StatusCode), Properties.Settings.Default.log_level, 2);
                     return null;
                     //throw new Exception("Impossibru");
                 }
@@ -330,13 +342,13 @@ namespace IcingaBusylightAgent
             catch(System.Net.WebException e)
             {
                 //Could not access information
-                System.Console.WriteLine("Could not access information, error: {0}", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Could not access information, error: {0}", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch(System.ArgumentException e)
             {
-                System.Console.WriteLine("Error: {0}", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Error: {0}", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
@@ -351,43 +363,43 @@ namespace IcingaBusylightAgent
         private List<apiDataset> updateHosts()
         {
             //Update host information
-            System.Console.WriteLine("Updating host information");
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Updating host information"), Properties.Settings.Default.log_level, 2);
             string result = "";
             //TODO: migrate to getInventory() function
 
             try
             {
                 //Get result
-                result = getHTMLPostResult(this.url + "v1/objects/hosts", "{ \"type\": \"Host\", \"filter\": \"host.state!=0 && host.acknowledgement==0\", \"attrs\": [ \"name\", \"state\", \"acknowledgement\" ] }");
+                result = getHTMLPostResult(String.Format("{0}{1}", this.url, "v1/objects/hosts"), "{ \"type\": \"Host\", \"filter\": \"host.state!=0 && host.acknowledgement==0\", \"attrs\": [ \"name\", \"state\", \"acknowledgement\" ] }");
                 //BOO: Removing root level as I'm too lame to do this nicer...
                 result = result.Substring(11, (result.Length - 12));
-                System.Console.WriteLine("RESULT: '{0}'", result);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("RESULT: '{0}'", result), Properties.Settings.Default.log_level, 2);
                 //Try to deserialize objects
                 var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
                 foreach (apiDataset entry in datasetList)
                 {
                     //dump result
-                    System.Console.WriteLine("Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement), Properties.Settings.Default.log_level, 2);
                 }
                 return datasetList;
             }
             catch (UriFormatException e)
             {
                 //Connection could not be openend - URL invalid/host down?
-                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message);      
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (ArgumentOutOfRangeException e)
             {
                 //No hosts
-                System.Console.WriteLine("No hosts found matching conditions! ('{0}', '{1}')", e.Message, result);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("No hosts found matching conditions! ('{0}', '{1}')", e.Message, result), Properties.Settings.Default.log_level, 2);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("Generic error: '{0}'", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Generic error: '{0}'", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
@@ -396,42 +408,43 @@ namespace IcingaBusylightAgent
         private List<apiDataset> updateServices()
         {
             //Update service information
-            System.Console.WriteLine("Updating service information");
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Updating service information", Properties.Settings.Default.log_level, 2);
             string result = "";
 
             try
             {
                 //Get result
-                result = getHTMLPostResult(this.url + "v1/objects/services", "{ \"type\": \"Service\", \"filter\": \"service.state!=0 && service.acknowledgement==0\", \"attrs\": [ \"name\", \"state\", \"acknowledgement\" ] }");
+                result = getHTMLPostResult(String.Format("{0}{1}", this.url, "v1/objects/services"), "{ \"type\": \"Service\", \"filter\": \"service.state!=0 && service.acknowledgement==0\", \"attrs\": [ \"name\", \"state\", \"acknowledgement\" ] }");
                 //BOO: Removing root level as I'm too lame to do this nicer...
                 result = result.Substring(11, (result.Length - 12));
-                System.Console.WriteLine("RESULT: '{0}'", result);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("RESULT: '{0}'", result), Properties.Settings.Default.log_level, 2);
                 //Try to deserialize objects
                 var datasetList = JsonConvert.DeserializeObject<List<apiDataset>>(result);
                 foreach (apiDataset entry in datasetList)
                 {
                     //dump result
-                    System.Console.WriteLine("Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'",
+                        entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name), Properties.Settings.Default.log_level, 2);
                 }
                 return datasetList;
             }
             catch(UriFormatException e)
             {
                 //Connection could not be openend - URL invalid/host down?
-                System.Console.WriteLine("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/services", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/services", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (ArgumentOutOfRangeException e)
             {
                 //No services
-                System.Console.WriteLine("No services found matching conditions! ('{0}', '{1}')", e.Message, result);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("No services found matching conditions! ('{0}', '{1}')", e.Message, result), Properties.Settings.Default.log_level, 2);
                 return null;
                 //throw new Exception("Impossibru");
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("Generic error: '{0}'", e.Message);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Generic error: '{0}'", e.Message), Properties.Settings.Default.log_level);
                 return null;
                 //throw new Exception("Impossibru");
             }
@@ -443,7 +456,7 @@ namespace IcingaBusylightAgent
 
             try
             {
-                System.Console.WriteLine("Updating data thread...");
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Updating data thread...", Properties.Settings.Default.log_level, 2);
 
                 //Variables
                 BusylightColor targetColor;
@@ -463,7 +476,8 @@ namespace IcingaBusylightAgent
                             foreach (apiDataset entry in hostData)
                             {
                                 //Unacknowledged alert
-                                System.Console.WriteLine("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'", entry.name, entry.attrs.state, entry.attrs.acknowledgement);
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'",
+                                    entry.name, entry.attrs.state, entry.attrs.acknowledgement), Properties.Settings.Default.log_level, 1);
                                 if (entry.attrs.state == 3)
                                 {
                                     //unknown
@@ -479,7 +493,9 @@ namespace IcingaBusylightAgent
                                     //warning
                                     targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
                                 }
-                                System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode,
+                                    String.Format("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue),
+                                    Properties.Settings.Default.log_level, 2);
                                 //Play sound
                                 if (this.sound_file != "") { player.Play(); }
                                 //Flash light
@@ -491,12 +507,12 @@ namespace IcingaBusylightAgent
                         catch (ArgumentNullException e)
                         {
                             //Empty dataset
-                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
+                            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Empty dataset: '{0}' - so, no faults? :-)", e.Message), Properties.Settings.Default.log_level, 2);
                         }
                         catch (NullReferenceException e)
                         {
                             //Empty dataset
-                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
+                            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Empty dataset: '{0}' - so, no faults? :-)", e.Message), Properties.Settings.Default.log_level, 2);
                         }
                     }
 
@@ -511,7 +527,8 @@ namespace IcingaBusylightAgent
                             foreach (apiDataset entry in serviceData)
                             {
                                 //Unacknowledged alert
-                                System.Console.WriteLine("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'", entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name);
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'",
+                                    entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name), Properties.Settings.Default.log_level, 1);
                                 if (entry.attrs.state == 3)
                                 {
                                     //unknown
@@ -527,7 +544,9 @@ namespace IcingaBusylightAgent
                                     //warning
                                     targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
                                 }
-                                System.Console.WriteLine("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue);
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode,
+                                    String.Format("Target color is R/G/B: {0}/{1}/{2}", targetColor.RedRgbValue, targetColor.GreenRgbValue, targetColor.BlueRgbValue),
+                                    Properties.Settings.Default.log_level, 2);
                                 //Play sound
                                 if (this.sound_file != "") { player.Play(); }
                                 //Flash light
@@ -539,12 +558,12 @@ namespace IcingaBusylightAgent
                         catch (ArgumentNullException e)
                         {
                             //Empty dataset
-                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
+                            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Empty dataset: '{0}' - so, no faults? :-)", e.Message), Properties.Settings.Default.log_level, 2);
                         }
                         catch (NullReferenceException e)
                         {
                             //Empty dataset
-                            System.Console.WriteLine("Empty dataset: '{0}' - so, no faults? :-)", e.Message);
+                            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Empty dataset: '{0}' - so, no faults? :-)", e.Message), Properties.Settings.Default.log_level, 2);
                         }
                     }
 
@@ -553,13 +572,13 @@ namespace IcingaBusylightAgent
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+                MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
             }
             catch (FormatException)
             {
-                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+                MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
             }
         }
 

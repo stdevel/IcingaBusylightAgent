@@ -50,5 +50,11 @@
     <Setting Name="icinga_hosts" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="log_mode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">console</Value>
+    </Setting>
+    <Setting Name="log_level" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

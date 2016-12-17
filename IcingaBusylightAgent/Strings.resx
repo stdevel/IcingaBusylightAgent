@@ -121,6 +121,30 @@
     <value>minute(s)</value>
     <comment>Label snippet, minute(s)</comment>
   </data>
+  <data name="logger_console" xml:space="preserve">
+    <value>Console (default)</value>
+    <comment>Log mode, Console</comment>
+  </data>
+  <data name="logger_debug" xml:space="preserve">
+    <value>50 stacks of trace</value>
+    <comment>Log level, Debug</comment>
+  </data>
+  <data name="logger_error" xml:space="preserve">
+    <value>Errors</value>
+    <comment>Log level, Error</comment>
+  </data>
+  <data name="logger_eventlog" xml:space="preserve">
+    <value>EventLog</value>
+    <comment>Log mode, EventLog</comment>
+  </data>
+  <data name="logger_file" xml:space="preserve">
+    <value>File</value>
+    <comment>Log mode, File</comment>
+  </data>
+  <data name="logger_info" xml:space="preserve">
+    <value>Info</value>
+    <comment>Log level, Info</comment>
+  </data>
   <data name="mnu_about" xml:space="preserve">
     <value>About...</value>
     <comment>ContextMnu TrayIcon, About</comment>
@@ -136,6 +160,18 @@
   <data name="mnu_update" xml:space="preserve">
     <value>Update</value>
     <comment>ContextMnu TrayIcon, Update</comment>
+  </data>
+  <data name="msgbox_error" xml:space="preserve">
+    <value>Error</value>
+    <comment>MsgBox, Error</comment>
+  </data>
+  <data name="msgbox_eventlog_unavailable" xml:space="preserve">
+    <value>Unable to write to EventLog, check permissions!</value>
+    <comment>MsgBox, Unable to access EventLog</comment>
+  </data>
+  <data name="msgbox_icinga_unavailable" xml:space="preserve">
+    <value>Unable to connect to Icinga2 instance, check settings!</value>
+    <comment>MsgBox, Unable to connect</comment>
   </data>
   <data name="welcome_message" xml:space="preserve">
     <value>is active</value>

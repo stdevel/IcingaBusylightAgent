@@ -214,5 +214,29 @@ namespace IcingaBusylightAgent.Properties {
                 this["icinga_hosts"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("console")]
+        public string log_mode {
+            get {
+                return ((string)(this["log_mode"]));
+            }
+            set {
+                this["log_mode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int log_level {
+            get {
+                return ((int)(this["log_level"]));
+            }
+            set {
+                this["log_level"] = value;
+            }
+        }
     }
 }

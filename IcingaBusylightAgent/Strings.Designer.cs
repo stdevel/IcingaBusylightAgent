@@ -70,6 +70,60 @@ namespace IcingaBusylightAgent {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Console (default) ähnelt.
+        /// </summary>
+        internal static string logger_console {
+            get {
+                return ResourceManager.GetString("logger_console", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 50 stacks of trace ähnelt.
+        /// </summary>
+        internal static string logger_debug {
+            get {
+                return ResourceManager.GetString("logger_debug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Errors ähnelt.
+        /// </summary>
+        internal static string logger_error {
+            get {
+                return ResourceManager.GetString("logger_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die EventLog ähnelt.
+        /// </summary>
+        internal static string logger_eventlog {
+            get {
+                return ResourceManager.GetString("logger_eventlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die File ähnelt.
+        /// </summary>
+        internal static string logger_file {
+            get {
+                return ResourceManager.GetString("logger_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Info ähnelt.
+        /// </summary>
+        internal static string logger_info {
+            get {
+                return ResourceManager.GetString("logger_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die About... ähnelt.
         /// </summary>
         internal static string mnu_about {
@@ -102,6 +156,33 @@ namespace IcingaBusylightAgent {
         internal static string mnu_update {
             get {
                 return ResourceManager.GetString("mnu_update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
+        /// </summary>
+        internal static string msgbox_error {
+            get {
+                return ResourceManager.GetString("msgbox_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unable to write to EventLog, check permissions! ähnelt.
+        /// </summary>
+        internal static string msgbox_eventlog_unavailable {
+            get {
+                return ResourceManager.GetString("msgbox_eventlog_unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unable to connect to Icinga2 instance, check settings! ähnelt.
+        /// </summary>
+        internal static string msgbox_icinga_unavailable {
+            get {
+                return ResourceManager.GetString("msgbox_icinga_unavailable", resourceCulture);
             }
         }
         

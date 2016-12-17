@@ -34,6 +34,10 @@ namespace IcingaBusylightAgent
         //Translate _all_ the strings!
         ResourceManager rm = Strings.ResourceManager;
 
+        //Logger
+        String loggerMode;
+        int loggerLevel;
+
         //Icinga2 client
         Icinga2Client demoClient;
 
@@ -44,14 +48,14 @@ namespace IcingaBusylightAgent
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
-            //Pre-select Icinga settings
             try
             {
+                //Pre-select Icinga settings
                 txt_url.Text = Properties.Settings.Default.icinga_url;
                 txt_username.Text = Properties.Settings.Default.icinga_user;
                 txt_password.Text = Properties.Settings.Default.icinga_pass;
                 track_timer.Value = Properties.Settings.Default.icinga_update_interval;
-                lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
+                lbl_track_timer.Text = string.Format("{0} {1}",track_timer.Value, rm.GetString("lbl_minutes"));
                 chkHosts.Checked = Properties.Settings.Default.icinga_check_hosts;
                 chkServices.Checked = Properties.Settings.Default.icinga_check_services;
                 txt_soundfile.Text = Properties.Settings.Default.sound_file;
@@ -71,23 +75,73 @@ namespace IcingaBusylightAgent
                 track_volume.Value = this.dictVol.FirstOrDefault(x => x.Value == Properties.Settings.Default.sound_volume).Key;
                 lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
 
+                //Add logger entries
+                box_logmode.Items.Add(rm.GetString("logger_console"));
+                box_logmode.Items.Add(rm.GetString("logger_file"));
+                box_logmode.Items.Add(rm.GetString("logger_eventlog"));
+                box_loglevel.Items.Add(rm.GetString("logger_error"));
+                box_loglevel.Items.Add(rm.GetString("logger_info"));
+                box_loglevel.Items.Add(rm.GetString("logger_debug"));
+
+                //Log mode
+                switch (Properties.Settings.Default.log_mode)
+                {   
+                    case "eventlog":
+                        //Eventlog
+                        box_logmode.SelectedItem = rm.GetString("logger_eventlog");
+                        loggerMode = "eventlog";
+                        break;
+                    case "file":
+                        //file
+                        box_logmode.SelectedItem = rm.GetString("logger_file");
+                        loggerMode = "file";
+                        break;
+                    case "console":
+                        //console
+                        box_logmode.SelectedItem = rm.GetString("logger_console");
+                        loggerMode = "console";
+                        break;
+                }
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Log mode is '{0}'", loggerMode), Properties.Settings.Default.log_level, 2);
+
+                //Log level
+                switch (Properties.Settings.Default.log_level)
+                {
+                    case 0:
+                        //Error
+                        box_loglevel.SelectedItem = rm.GetString("logger_error");
+                        loggerLevel = 0;
+                        break;
+                    case 1:
+                        //Info
+                        box_loglevel.SelectedItem = rm.GetString("logger_info");
+                        loggerLevel = 1;
+                        break;
+                    case 2:
+                        //Debug
+                        box_loglevel.SelectedItem = rm.GetString("logger_debug");
+                        loggerLevel = 2;
+                        break;
+                }
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Log level is '{0}'", loggerLevel), Properties.Settings.Default.log_level, 2);
+
                 //Validate
                 validateSettings();
 
                 //Pre-select listbox items
-                System.Console.WriteLine("Hostgroup filter is '{0}'", Properties.Settings.Default.icinga_hostgroups);
-                for(int i=0; i < lbox_hostgroups.Items.Count; i++)
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Hostgroup filter is '{0}'", Properties.Settings.Default.icinga_hostgroups), Properties.Settings.Default.log_level, 2);
+                for (int i=0; i < lbox_hostgroups.Items.Count; i++)
                 {
                     if (Properties.Settings.Default.icinga_hostgroups.Contains( lbox_hostgroups.Items[i].ToString().Substring(0, lbox_hostgroups.Items[i].ToString().IndexOf(" ")) ))
                     {
-                        System.Console.WriteLine("Pre-selecting item '{0}'", lbox_hostgroups.Items[i].ToString());
+                        SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Pre-selecting item '{0}'", lbox_hostgroups.Items[i].ToString()), Properties.Settings.Default.log_level, 2);
                         lbox_hostgroups.SetSelected(i, true);
                     }
                 }
             }
             catch(ArgumentOutOfRangeException)
             {
-                System.Console.WriteLine("Unable to pre-select settings, might by fscked up or unset");
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to pre-select settings, might by fscked up or unset", Properties.Settings.Default.log_level, 1);
             }
         }
 
@@ -109,10 +163,10 @@ namespace IcingaBusylightAgent
             for(int i=0; i < lbox_hostgroups.SelectedItems.Count; i++)
             {
                 temp = lbox_hostgroups.SelectedItems[i].ToString();
-                temp = temp.Substring(0, temp.IndexOf(" "));     
-                System.Console.WriteLine("Adding entry to hostgroup filter: '{0}'", temp);
+                temp = temp.Substring(0, temp.IndexOf(" "));
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Adding entry to hostgroup filter: '{0}'", temp), Properties.Settings.Default.log_level, 2);
                 if (new_filter == "") { new_filter = temp; }
-                else { new_filter = new_filter + ";" + temp; }
+                else { new_filter = string.Format("{0};{1}", new_filter, temp); }
             }
             Properties.Settings.Default.icinga_hostgroups = new_filter;
 
@@ -128,10 +182,15 @@ namespace IcingaBusylightAgent
             Properties.Settings.Default.sound_volume = this.dictVol[track_volume.Value];
             Properties.Settings.Default.sound_file = txt_soundfile.Text;
 
+            //Logging
+            Properties.Settings.Default.log_mode = loggerMode;
+            Properties.Settings.Default.log_level = loggerLevel;
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Log mode is '{0}', log level is '{1}'", loggerMode, loggerLevel), Properties.Settings.Default.log_level, 2);
+
             //Save changes
             Properties.Settings.Default.Save();
 
-            System.Console.WriteLine("Saved settings!");
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Saved settings!", Properties.Settings.Default.log_level, 2);
         }
 
         private void validateSettings()
@@ -164,13 +223,13 @@ namespace IcingaBusylightAgent
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+                MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
             }
             catch (FormatException)
             {
-                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+                MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
             }
         }
 
@@ -187,13 +246,13 @@ namespace IcingaBusylightAgent
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+                MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
             }
             catch (FormatException)
             {
-                MessageBox.Show("Unable to connect to Icinga2 instance, check settings!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                System.Console.WriteLine("Unable to connect to Icinga2 instance");
+                MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
             }
         }
 
@@ -277,7 +336,7 @@ namespace IcingaBusylightAgent
 
         private void track_volume_Scroll(object sender, EventArgs e)
         {
-            System.Console.WriteLine("Value is '{0}', setting will be '{1}'", track_volume.Value, this.dictVol[track_volume.Value].ToString());
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Value is '{0}', setting will be '{1}'", track_volume.Value, this.dictVol[track_volume.Value].ToString()), Properties.Settings.Default.log_level, 2);
 
             //Demonstrate
             var controller = new Busylight.SDK();
@@ -293,10 +352,10 @@ namespace IcingaBusylightAgent
 
         private void track_timer_Scroll(object sender, EventArgs e)
         {
-            System.Console.WriteLine("Timer is '{0}'", track_timer.Value);
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Timer is '{0}'", track_timer.Value), Properties.Settings.Default.log_level, 2);
 
             //Set label
-            lbl_track_timer.Text = track_timer.Value + " " + rm.GetString("lbl_minutes");
+            lbl_track_timer.Text = string.Format("{0} {1}", track_timer.Value, rm.GetString("lbl_minutes"));
         }
 
         private void btn_validate_Click(object sender, EventArgs e)
@@ -314,6 +373,47 @@ namespace IcingaBusylightAgent
                 //Valid file selected
                 txt_soundfile.Text = ofd_sound.FileName;
             }
+        }
+
+        private void btn_default_Click(object sender, EventArgs e)
+        {
+            //Restore senseful default settings
+            txt_url.Text = "https://myhost.localdomain.loc:5665/";
+            track_timer.Value = 5;
+            lbl_track_timer.Text = string.Format("5 {0}", rm.GetString("lbl_minutes"));
+            chkHosts.Checked = true;
+            chkServices.Checked = true;
+            box_sound.SelectedItem = "IM1";
+            track_volume.Value = 3;
+            cdg_up_ok.Color = Color.Green;
+            btn_up_ok.BackColor = cdg_up_ok.Color;
+            cdg_unreach_warn.Color = Color.Orange;
+            btn_unreach_warn.BackColor = cdg_unreach_warn.Color;
+            cdg_down_crit.Color = Color.Red;
+            btn_down_crit.BackColor = cdg_down_crit.Color;
+            cdg_unknown.Color = Color.Fuchsia;
+            btn_unknown.BackColor = cdg_unknown.Color;
+            box_logmode.SelectedIndex = 0;
+            loggerMode = "console";
+            loggerLevel = 1;
+        }
+
+        private void box_logmode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Log mode
+            if (box_logmode.SelectedItem.ToString() == rm.GetString("logger_eventlog")) { loggerMode = "eventlog"; }
+            else if (box_logmode.SelectedItem.ToString() == rm.GetString("logger_file")) { loggerMode = "file"; }
+            else { loggerMode = "console"; }
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Log mode changed to '{0}'", loggerMode), Properties.Settings.Default.log_level, 2);
+        }
+
+        private void box_loglevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Log level
+            if (box_loglevel.SelectedItem.ToString() == rm.GetString("logger_debug")) { loggerLevel = 2; }
+            else if (box_loglevel.SelectedItem.ToString() == rm.GetString("logger_info")) { loggerLevel = 1; }
+            else { loggerLevel = 0; }
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Log level changed to '{0}'", loggerLevel), Properties.Settings.Default.log_level, 2);
         }
     }
 }

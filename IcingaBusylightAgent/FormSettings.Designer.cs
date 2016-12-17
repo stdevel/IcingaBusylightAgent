@@ -63,6 +63,11 @@
             this.lbl_filter = new System.Windows.Forms.Label();
             this.lbox_hostgroups = new System.Windows.Forms.ListBox();
             this.ofd_sound = new System.Windows.Forms.OpenFileDialog();
+            this.lbl_logmode = new System.Windows.Forms.Label();
+            this.box_logmode = new System.Windows.Forms.ComboBox();
+            this.btn_default = new System.Windows.Forms.Button();
+            this.lbl_loglevel = new System.Windows.Forms.Label();
+            this.box_loglevel = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).BeginInit();
             this.SuspendLayout();
@@ -107,11 +112,11 @@
             // 
             // box_sound
             // 
+            resources.ApplyResources(this.box_sound, "box_sound");
             this.box_sound.FormattingEnabled = true;
             this.box_sound.Items.AddRange(new object[] {
             resources.GetString("box_sound.Items"),
             resources.GetString("box_sound.Items1")});
-            resources.ApplyResources(this.box_sound, "box_sound");
             this.box_sound.Name = "box_sound";
             this.box_sound.SelectedIndexChanged += new System.EventHandler(this.box_sound_SelectedIndexChanged);
             // 
@@ -160,8 +165,8 @@
             // 
             // track_volume
             // 
-            this.track_volume.LargeChange = 1;
             resources.ApplyResources(this.track_volume, "track_volume");
+            this.track_volume.LargeChange = 1;
             this.track_volume.Maximum = 4;
             this.track_volume.Name = "track_volume";
             this.track_volume.Scroll += new System.EventHandler(this.track_volume_Scroll);
@@ -238,8 +243,8 @@
             // 
             // lbox_hostgroups
             // 
-            this.lbox_hostgroups.FormattingEnabled = true;
             resources.ApplyResources(this.lbox_hostgroups, "lbox_hostgroups");
+            this.lbox_hostgroups.FormattingEnabled = true;
             this.lbox_hostgroups.Name = "lbox_hostgroups";
             this.lbox_hostgroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             // 
@@ -248,10 +253,46 @@
             this.ofd_sound.FileName = "openFileDialog1";
             resources.ApplyResources(this.ofd_sound, "ofd_sound");
             // 
+            // lbl_logmode
+            // 
+            resources.ApplyResources(this.lbl_logmode, "lbl_logmode");
+            this.lbl_logmode.Name = "lbl_logmode";
+            // 
+            // box_logmode
+            // 
+            resources.ApplyResources(this.box_logmode, "box_logmode");
+            this.box_logmode.FormattingEnabled = true;
+            this.box_logmode.Name = "box_logmode";
+            this.box_logmode.SelectedIndexChanged += new System.EventHandler(this.box_logmode_SelectedIndexChanged);
+            // 
+            // btn_default
+            // 
+            resources.ApplyResources(this.btn_default, "btn_default");
+            this.btn_default.Name = "btn_default";
+            this.btn_default.UseVisualStyleBackColor = true;
+            this.btn_default.Click += new System.EventHandler(this.btn_default_Click);
+            // 
+            // lbl_loglevel
+            // 
+            resources.ApplyResources(this.lbl_loglevel, "lbl_loglevel");
+            this.lbl_loglevel.Name = "lbl_loglevel";
+            // 
+            // box_loglevel
+            // 
+            resources.ApplyResources(this.box_loglevel, "box_loglevel");
+            this.box_loglevel.FormattingEnabled = true;
+            this.box_loglevel.Name = "box_loglevel";
+            this.box_loglevel.SelectedIndexChanged += new System.EventHandler(this.box_loglevel_SelectedIndexChanged);
+            // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lbl_loglevel);
+            this.Controls.Add(this.box_loglevel);
+            this.Controls.Add(this.btn_default);
+            this.Controls.Add(this.lbl_logmode);
+            this.Controls.Add(this.box_logmode);
             this.Controls.Add(this.lbox_hostgroups);
             this.Controls.Add(this.lbl_filter);
             this.Controls.Add(this.btn_validate);
@@ -329,6 +370,11 @@
         private System.Windows.Forms.Label lbl_filter;
         private System.Windows.Forms.ListBox lbox_hostgroups;
         private System.Windows.Forms.OpenFileDialog ofd_sound;
+        private System.Windows.Forms.Label lbl_logmode;
+        private System.Windows.Forms.ComboBox box_logmode;
+        private System.Windows.Forms.Button btn_default;
+        private System.Windows.Forms.Label lbl_loglevel;
+        private System.Windows.Forms.ComboBox box_loglevel;
     }
 }
 
