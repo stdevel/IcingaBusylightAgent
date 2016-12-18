@@ -22,7 +22,6 @@ namespace IcingaBusylightAgent
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
             Application.Run(new AgentContext());
         }
     }
@@ -30,11 +29,14 @@ namespace IcingaBusylightAgent
     //TrayIcon context
     public class AgentContext : ApplicationContext
     {
+        //Some variables
         private NotifyIcon trayIcon;
         private Thread dataThread;
+        private Icinga2Client workerObject;
 
-        private void showTip(String title, String message, ToolTipIcon icon)
+        private void showTip(string title, string message, ToolTipIcon icon)
         {
+            //Show baloon tooltip
             trayIcon.BalloonTipTitle = title;
             trayIcon.BalloonTipText = message;
             trayIcon.BalloonTipIcon = icon;
@@ -64,22 +66,8 @@ namespace IcingaBusylightAgent
             };
 
             //Start data thread
-            Icinga2Client workerObject = new Icinga2Client(
-                IcingaBusylightAgent.Properties.Settings.Default.icinga_url,
-                IcingaBusylightAgent.Properties.Settings.Default.icinga_user,
-                IcingaBusylightAgent.Properties.Settings.Default.icinga_pass,
-                (IcingaBusylightAgent.Properties.Settings.Default.icinga_update_interval*1000*60),
-                IcingaBusylightAgent.Properties.Settings.Default.color_up_ok,
-                IcingaBusylightAgent.Properties.Settings.Default.color_down_crit,
-                IcingaBusylightAgent.Properties.Settings.Default.color_unreach_warn,
-                IcingaBusylightAgent.Properties.Settings.Default.color_unknown,
-                IcingaBusylightAgent.Properties.Settings.Default.sound,
-                IcingaBusylightAgent.Properties.Settings.Default.sound_volume
-                );
-            //Set sound file
-            workerObject.setSoundfile(Properties.Settings.Default.sound_file);
-            
-            dataThread = new Thread(workerObject.updateData);
+            initializeThread();
+
             //Show tool-tip
             Assembly assem = Assembly.GetEntryAssembly();
             AssemblyName assemName = assem.GetName();
@@ -89,12 +77,35 @@ namespace IcingaBusylightAgent
             rm.GetString("welcome_message"), ToolTipIcon.Info);
 
             //Initialize log
-            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Application startup completed at {0}", DateTime.Now.ToString()), Properties.Settings.Default.log_level, 2);
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Application startup completed at {0}", DateTime.Now.ToString()), Properties.Settings.Default.log_level, 2);
+        }
+
+        void initializeThread()
+        {
+            //Create and (re-)start data thread
+            workerObject = new Icinga2Client(
+                IcingaBusylightAgent.Properties.Settings.Default.icinga_url,
+                IcingaBusylightAgent.Properties.Settings.Default.icinga_user,
+                IcingaBusylightAgent.Properties.Settings.Default.icinga_pass,
+                (IcingaBusylightAgent.Properties.Settings.Default.icinga_update_interval * 1000 * 60),
+                IcingaBusylightAgent.Properties.Settings.Default.color_up_ok,
+                IcingaBusylightAgent.Properties.Settings.Default.color_down_crit,
+                IcingaBusylightAgent.Properties.Settings.Default.color_unreach_warn,
+                IcingaBusylightAgent.Properties.Settings.Default.color_unknown,
+                IcingaBusylightAgent.Properties.Settings.Default.sound,
+                IcingaBusylightAgent.Properties.Settings.Default.sound_volume
+                );
+
+            //Set sound file
+            workerObject.setSoundfile(Properties.Settings.Default.sound_file);
+
+            //Update _all_ the data
+            dataThread = new Thread(workerObject.updateData);
         }
 
         void update(object sender, EventArgs e)
         {
-            //TODO: Update data thread
+            //Update data thread
             dataThread.Start();
         }
 
@@ -109,7 +120,10 @@ namespace IcingaBusylightAgent
         {
             //Show configuration dialog
             FormSettings form_conf = new FormSettings();
-            form_conf.Show();
+            var dialogResult = form_conf.ShowDialog();
+
+            //Reload thread
+            initializeThread();
         }
         void exit(object sender, EventArgs e)
         {

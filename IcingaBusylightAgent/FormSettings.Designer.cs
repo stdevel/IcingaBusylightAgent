@@ -68,8 +68,16 @@
             this.btn_default = new System.Windows.Forms.Button();
             this.lbl_loglevel = new System.Windows.Forms.Label();
             this.box_loglevel = new System.Windows.Forms.ComboBox();
+            this.tabc_settings = new System.Windows.Forms.TabControl();
+            this.tabp_icinga2 = new System.Windows.Forms.TabPage();
+            this.tabp_notification = new System.Windows.Forms.TabPage();
+            this.tabp_other = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).BeginInit();
+            this.tabc_settings.SuspendLayout();
+            this.tabp_icinga2.SuspendLayout();
+            this.tabp_notification.SuspendLayout();
+            this.tabp_other.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_save
@@ -166,6 +174,7 @@
             // track_volume
             // 
             resources.ApplyResources(this.track_volume, "track_volume");
+            this.track_volume.BackColor = System.Drawing.SystemColors.Window;
             this.track_volume.LargeChange = 1;
             this.track_volume.Maximum = 4;
             this.track_volume.Name = "track_volume";
@@ -179,6 +188,7 @@
             // track_timer
             // 
             resources.ApplyResources(this.track_timer, "track_timer");
+            this.track_timer.BackColor = System.Drawing.SystemColors.Window;
             this.track_timer.Maximum = 60;
             this.track_timer.Minimum = 1;
             this.track_timer.Name = "track_timer";
@@ -284,43 +294,71 @@
             this.box_loglevel.Name = "box_loglevel";
             this.box_loglevel.SelectedIndexChanged += new System.EventHandler(this.box_loglevel_SelectedIndexChanged);
             // 
+            // tabc_settings
+            // 
+            resources.ApplyResources(this.tabc_settings, "tabc_settings");
+            this.tabc_settings.Controls.Add(this.tabp_icinga2);
+            this.tabc_settings.Controls.Add(this.tabp_notification);
+            this.tabc_settings.Controls.Add(this.tabp_other);
+            this.tabc_settings.Name = "tabc_settings";
+            this.tabc_settings.SelectedIndex = 0;
+            // 
+            // tabp_icinga2
+            // 
+            resources.ApplyResources(this.tabp_icinga2, "tabp_icinga2");
+            this.tabp_icinga2.Controls.Add(this.lbl_url);
+            this.tabp_icinga2.Controls.Add(this.lbl_username);
+            this.tabp_icinga2.Controls.Add(this.lbl_password);
+            this.tabp_icinga2.Controls.Add(this.txt_url);
+            this.tabp_icinga2.Controls.Add(this.txt_username);
+            this.tabp_icinga2.Controls.Add(this.txt_password);
+            this.tabp_icinga2.Controls.Add(this.lbox_hostgroups);
+            this.tabp_icinga2.Controls.Add(this.lbl_timer);
+            this.tabp_icinga2.Controls.Add(this.lbl_filter);
+            this.tabp_icinga2.Controls.Add(this.track_timer);
+            this.tabp_icinga2.Controls.Add(this.btn_validate);
+            this.tabp_icinga2.Controls.Add(this.lbl_track_timer);
+            this.tabp_icinga2.Controls.Add(this.lbl_checks);
+            this.tabp_icinga2.Controls.Add(this.chkHosts);
+            this.tabp_icinga2.Controls.Add(this.chkServices);
+            this.tabp_icinga2.Name = "tabp_icinga2";
+            this.tabp_icinga2.UseVisualStyleBackColor = true;
+            // 
+            // tabp_notification
+            // 
+            resources.ApplyResources(this.tabp_notification, "tabp_notification");
+            this.tabp_notification.Controls.Add(this.lbl_sounds);
+            this.tabp_notification.Controls.Add(this.box_sound);
+            this.tabp_notification.Controls.Add(this.lbl_volume);
+            this.tabp_notification.Controls.Add(this.track_volume);
+            this.tabp_notification.Controls.Add(this.lbl_track_volume);
+            this.tabp_notification.Controls.Add(this.lbl_soundfile);
+            this.tabp_notification.Controls.Add(this.btn_up_ok);
+            this.tabp_notification.Controls.Add(this.txt_soundfile);
+            this.tabp_notification.Controls.Add(this.btn_unknown);
+            this.tabp_notification.Controls.Add(this.btn_soundfile_set);
+            this.tabp_notification.Controls.Add(this.btn_unreach_warn);
+            this.tabp_notification.Controls.Add(this.lbl_colors);
+            this.tabp_notification.Controls.Add(this.btn_down_crit);
+            this.tabp_notification.Name = "tabp_notification";
+            this.tabp_notification.UseVisualStyleBackColor = true;
+            // 
+            // tabp_other
+            // 
+            resources.ApplyResources(this.tabp_other, "tabp_other");
+            this.tabp_other.Controls.Add(this.lbl_logmode);
+            this.tabp_other.Controls.Add(this.lbl_loglevel);
+            this.tabp_other.Controls.Add(this.box_logmode);
+            this.tabp_other.Controls.Add(this.box_loglevel);
+            this.tabp_other.Name = "tabp_other";
+            this.tabp_other.UseVisualStyleBackColor = true;
+            // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.lbl_loglevel);
-            this.Controls.Add(this.box_loglevel);
+            this.Controls.Add(this.tabc_settings);
             this.Controls.Add(this.btn_default);
-            this.Controls.Add(this.lbl_logmode);
-            this.Controls.Add(this.box_logmode);
-            this.Controls.Add(this.lbox_hostgroups);
-            this.Controls.Add(this.lbl_filter);
-            this.Controls.Add(this.btn_validate);
-            this.Controls.Add(this.txt_soundfile);
-            this.Controls.Add(this.btn_soundfile_set);
-            this.Controls.Add(this.lbl_soundfile);
-            this.Controls.Add(this.chkServices);
-            this.Controls.Add(this.chkHosts);
-            this.Controls.Add(this.lbl_checks);
-            this.Controls.Add(this.lbl_track_volume);
-            this.Controls.Add(this.lbl_track_timer);
-            this.Controls.Add(this.track_timer);
-            this.Controls.Add(this.lbl_timer);
-            this.Controls.Add(this.track_volume);
-            this.Controls.Add(this.lbl_volume);
-            this.Controls.Add(this.btn_up_ok);
-            this.Controls.Add(this.btn_unknown);
-            this.Controls.Add(this.btn_unreach_warn);
-            this.Controls.Add(this.btn_down_crit);
-            this.Controls.Add(this.lbl_colors);
-            this.Controls.Add(this.lbl_sounds);
-            this.Controls.Add(this.box_sound);
-            this.Controls.Add(this.txt_password);
-            this.Controls.Add(this.txt_username);
-            this.Controls.Add(this.txt_url);
-            this.Controls.Add(this.lbl_password);
-            this.Controls.Add(this.lbl_username);
-            this.Controls.Add(this.lbl_url);
             this.Controls.Add(this.btn_save);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -329,8 +367,14 @@
             this.Load += new System.EventHandler(this.FormSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).EndInit();
+            this.tabc_settings.ResumeLayout(false);
+            this.tabp_icinga2.ResumeLayout(false);
+            this.tabp_icinga2.PerformLayout();
+            this.tabp_notification.ResumeLayout(false);
+            this.tabp_notification.PerformLayout();
+            this.tabp_other.ResumeLayout(false);
+            this.tabp_other.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -375,6 +419,10 @@
         private System.Windows.Forms.Button btn_default;
         private System.Windows.Forms.Label lbl_loglevel;
         private System.Windows.Forms.ComboBox box_loglevel;
+        private System.Windows.Forms.TabControl tabc_settings;
+        private System.Windows.Forms.TabPage tabp_icinga2;
+        private System.Windows.Forms.TabPage tabp_notification;
+        private System.Windows.Forms.TabPage tabp_other;
     }
 }
 

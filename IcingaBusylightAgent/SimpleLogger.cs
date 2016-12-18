@@ -29,13 +29,13 @@ namespace IcingaBusylightAgent
         ResourceManager rm = Strings.ResourceManager;
 
         protected readonly object lockObj = new object();
-        public abstract void Log(String message, int filterType, int messageType);
+        public abstract void Log(string message, int filterType, int messageType);
         //log levels: 0: error, 1: info, 2: debug
 
         public class FileLogger: SimpleLogger
         {
             //Create logfile in current working directory
-            public String filePath = AppDomain.CurrentDomain.BaseDirectory + "IcingaBusylightAgent.log";
+            public string filePath = AppDomain.CurrentDomain.BaseDirectory + "IcingaBusylightAgent.log";
 
             public override void Log(string message, int filterType, int messageType)
             {
@@ -46,7 +46,7 @@ namespace IcingaBusylightAgent
                     { 1, "INFO" },
                     { 2, "DEBUG" }
                 };
-
+                //Only add messages that are relevant to our log level
                 if (messageType <= filterType)
                 {
                     lock (lockObj)
@@ -54,7 +54,7 @@ namespace IcingaBusylightAgent
                         using (StreamWriter streamWriter = new StreamWriter(filePath, true))
                         {
                             //Write message and die in a fire
-                            streamWriter.WriteLine(String.Format("{0}: {1}", logType[messageType], message));
+                            streamWriter.WriteLine(string.Format("{0}: {1}", logType[messageType], message));
                             streamWriter.Close();
                         }
                     }
@@ -103,7 +103,8 @@ namespace IcingaBusylightAgent
                 };
                 lock (lockObj)
                 {
-                    if (messageType <= filterType) { System.Console.WriteLine(String.Format("{0}: {1}", logType[messageType], message)); }
+                    //Only add messages that are relevant to our log level
+                    if (messageType <= filterType) { System.Console.WriteLine(string.Format("{0}: {1}", logType[messageType], message)); }
                 }
             }
         }
@@ -114,6 +115,7 @@ namespace IcingaBusylightAgent
     {
         private static SimpleLogger logger = null;
 
+        //Create and utilize logger depending on parameters
         public static void Log(string target, string message, int filterType, int messageType=0)
         {
             switch (target)

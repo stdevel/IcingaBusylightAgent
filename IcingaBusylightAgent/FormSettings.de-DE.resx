@@ -199,6 +199,12 @@
   <data name="lbl_loglevel.Text" xml:space="preserve">
     <value>Detail-Level:</value>
   </data>
+  <data name="tabp_notification.Text" xml:space="preserve">
+    <value>Benachrichtigung</value>
+  </data>
+  <data name="tabp_other.Text" xml:space="preserve">
+    <value>Sonstiges</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Einstellungen</value>
   </data>

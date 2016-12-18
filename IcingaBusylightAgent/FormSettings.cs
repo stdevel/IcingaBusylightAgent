@@ -16,11 +16,16 @@ namespace IcingaBusylightAgent
 {
     public partial class FormSettings : Form
     {
-        //Variables
-        Dictionary<String, Busylight.BusylightJingleClip> dictSound = new Dictionary<string, Busylight.BusylightJingleClip>()
+        //Some variables
+        Dictionary<string, Busylight.BusylightJingleClip> dictJingle = new Dictionary<string, Busylight.BusylightJingleClip>()
         {
             {"IM1", Busylight.BusylightJingleClip.IM1 },
             {"IM2", Busylight.BusylightJingleClip.IM2 },
+        };
+        Dictionary<string, Busylight.BusylightSoundClip> dictSound = new Dictionary<string, Busylight.BusylightSoundClip>()
+        {
+            {"IM1", Busylight.BusylightSoundClip.IM1 },
+            {"IM2", Busylight.BusylightSoundClip.IM2 },
         };
         Dictionary<int, Busylight.BusylightVolume> dictVol = new Dictionary<int, Busylight.BusylightVolume>()
         {
@@ -34,8 +39,8 @@ namespace IcingaBusylightAgent
         //Translate _all_ the strings!
         ResourceManager rm = Strings.ResourceManager;
 
-        //Logger
-        String loggerMode;
+        //Some logger variables
+        string loggerMode;
         int loggerLevel;
 
         //Icinga2 client
@@ -158,8 +163,8 @@ namespace IcingaBusylightAgent
             Properties.Settings.Default.icinga_check_services = chkServices.Checked;
 
             //Set hostgroup filter
-            String new_filter = "";
-            String temp = null;
+            string new_filter = "";
+            string temp = null;
             for(int i=0; i < lbox_hostgroups.SelectedItems.Count; i++)
             {
                 temp = lbox_hostgroups.SelectedItems[i].ToString();
@@ -178,7 +183,7 @@ namespace IcingaBusylightAgent
             Properties.Settings.Default.icinga_update_interval = track_timer.Value;
 
             //Set sound and volume
-            Properties.Settings.Default.sound = this.dictSound[box_sound.SelectedItem.ToString()];
+            Properties.Settings.Default.sound = this.dictJingle[box_sound.SelectedItem.ToString()];
             Properties.Settings.Default.sound_volume = this.dictVol[track_volume.Value];
             Properties.Settings.Default.sound_file = txt_soundfile.Text;
 
@@ -189,7 +194,6 @@ namespace IcingaBusylightAgent
 
             //Save changes
             Properties.Settings.Default.Save();
-
             SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Saved settings!", Properties.Settings.Default.log_level, 2);
         }
 
@@ -207,7 +211,7 @@ namespace IcingaBusylightAgent
                cdg_down_crit.Color,
                cdg_unreach_warn.Color,
                cdg_unknown.Color,
-               this.dictSound[box_sound.SelectedItem.ToString()],
+               this.dictJingle[box_sound.SelectedItem.ToString()],
                this.dictVol[track_volume.Value]
                );
 
@@ -314,40 +318,41 @@ namespace IcingaBusylightAgent
 
         private void box_sound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Play sound
-            var controller = new Busylight.SDK();
-            //TODO: Volume depending on setting?
-            if (box_sound.SelectedItem.ToString() == "IM1")
+            try
             {
-                //IM1
-                controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 }, Busylight.BusylightSoundClip.IM1, Properties.Settings.Default.sound_volume);
+                //Play sound
+                var controller = new Busylight.SDK();
+                controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 },
+                    dictSound[box_sound.SelectedItem.ToString()],
+                    dictVol[track_volume.Value]);
+                Thread.Sleep(3000);
+                controller.Terminate();
             }
-            else
+            catch(KeyNotFoundException)
             {
-                //IM2
-                controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 }, Busylight.BusylightSoundClip.IM2, Properties.Settings.Default.sound_volume);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Something went wrong when defining the sound based on the form's current selection", Properties.Settings.Default.log_level, 2);
             }
-            //TODO: Use selected sound?
-            //Impossibru because of mismatching Type (BusylightSoundClip vs. BusylightJingleClip)
-            //controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 }, this.dictSound[box_sound.SelectedText], Properties.Settings.Default.sound_volume);
-            Thread.Sleep(3000);
-            controller.Terminate();
         }
 
         private void track_volume_Scroll(object sender, EventArgs e)
         {
             SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Value is '{0}', setting will be '{1}'", track_volume.Value, this.dictVol[track_volume.Value].ToString()), Properties.Settings.Default.log_level, 2);
 
-            //Demonstrate
-            var controller = new Busylight.SDK();
-            //TODO: Use configured sound?
-            //Impossibru because of mismatching Type (BusylightSoundClip vs. BusylightJingleClip)
-            controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 }, Busylight.BusylightSoundClip.IM2,
-                this.dictVol[track_volume.Value]
-                );
+            try
+            {
+                //Demonstrate
+                var controller = new Busylight.SDK();
+                controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 }, dictSound[box_sound.SelectedItem.ToString()],
+                    this.dictVol[track_volume.Value]
+                    );
 
-            //Set label
-            lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
+                //Set label
+                lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
+            }
+            catch (KeyNotFoundException)
+            {
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Something went wrong when defining the volume based on the form's current selection", Properties.Settings.Default.log_level, 2);
+            }
         }
 
         private void track_timer_Scroll(object sender, EventArgs e)
@@ -413,7 +418,7 @@ namespace IcingaBusylightAgent
             if (box_loglevel.SelectedItem.ToString() == rm.GetString("logger_debug")) { loggerLevel = 2; }
             else if (box_loglevel.SelectedItem.ToString() == rm.GetString("logger_info")) { loggerLevel = 1; }
             else { loggerLevel = 0; }
-            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, String.Format("Log level changed to '{0}'", loggerLevel), Properties.Settings.Default.log_level, 2);
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Log level changed to '{0}'", loggerLevel), Properties.Settings.Default.log_level, 2);
         }
     }
 }

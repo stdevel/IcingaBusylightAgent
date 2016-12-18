@@ -24,7 +24,6 @@ namespace IcingaBusylightAgent
         private void FormAbout_Load(object sender, EventArgs e)
         {
             //Set links
-            //LinkLabel.Link = new Link
             llabel_icinga.Links.Add(0, 100, "http://www.icinga.org");
             llabel_plenom.Links.Add(0, 100, "http://www.plenom.com");
             llabel_stackoverflow.Links.Add(0, 100, "http://www.stackoverflow.com");
