@@ -28,7 +28,7 @@ To create an Icinga2 API user, create a configuration file like this on your Ici
 ```
 object ApiUser "busylight" {
   password = "giertz"
-  permissions = [ "objects/query/Host", "objects/query/Service" ]
+  permissions = [ "objects/query/Host", "objects/query/Service", "objects/query/Hostgroup" ]
 }
 ```
 
