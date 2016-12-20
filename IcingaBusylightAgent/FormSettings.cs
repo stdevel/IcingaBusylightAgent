@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 //Threading
 using System.Threading;
@@ -77,8 +73,14 @@ namespace IcingaBusylightAgent
 
                 //Pre-select sound items
                 box_sound.SelectedItem = Properties.Settings.Default.sound.ToString();
-                track_volume.Value = this.dictVol.FirstOrDefault(x => x.Value == Properties.Settings.Default.sound_volume).Key;
-                lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
+                track_volume.Value = dictVol.FirstOrDefault(x => x.Value == Properties.Settings.Default.sound_volume).Key;
+                lbl_track_volume.Text = dictVol[track_volume.Value].ToString();
+
+                //Pre-select other
+                txt_SpamThreshold.Text = Properties.Settings.Default.spam_thres.ToString();
+                chkEnableTips.Checked = Properties.Settings.Default.balloon_enable;
+                chkEnableLyncWorkaround.Checked = Properties.Settings.Default.lync_enable;
+                chkEnableTipStart.Checked = Properties.Settings.Default.balloon_enable_start;
 
                 //Add logger entries
                 box_logmode.Items.Add(rm.GetString("logger_console"));
@@ -183,14 +185,20 @@ namespace IcingaBusylightAgent
             Properties.Settings.Default.icinga_update_interval = track_timer.Value;
 
             //Set sound and volume
-            Properties.Settings.Default.sound = this.dictJingle[box_sound.SelectedItem.ToString()];
-            Properties.Settings.Default.sound_volume = this.dictVol[track_volume.Value];
+            Properties.Settings.Default.sound = dictJingle[box_sound.SelectedItem.ToString()];
+            Properties.Settings.Default.sound_volume = dictVol[track_volume.Value];
             Properties.Settings.Default.sound_file = txt_soundfile.Text;
 
             //Logging
             Properties.Settings.Default.log_mode = loggerMode;
             Properties.Settings.Default.log_level = loggerLevel;
             SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Log mode is '{0}', log level is '{1}'", loggerMode, loggerLevel), Properties.Settings.Default.log_level, 2);
+
+            //Set other
+            Properties.Settings.Default.balloon_enable = chkEnableTips.Checked;
+            Properties.Settings.Default.lync_enable = chkEnableLyncWorkaround.Checked;
+            Properties.Settings.Default.spam_thres = Convert.ToInt32(txt_SpamThreshold.Text);
+            Properties.Settings.Default.balloon_enable_start = chkEnableTipStart.Checked;
 
             //Save changes
             Properties.Settings.Default.Save();
@@ -206,13 +214,7 @@ namespace IcingaBusylightAgent
                txt_url.Text,
                txt_username.Text,
                txt_password.Text,
-               (track_timer.Value * 1000 * 60),
-               cdg_up_ok.Color,
-               cdg_down_crit.Color,
-               cdg_unreach_warn.Color,
-               cdg_unknown.Color,
-               this.dictJingle[box_sound.SelectedItem.ToString()],
-               this.dictVol[track_volume.Value]
+               (track_timer.Value * 1000 * 60)
                );
 
             //Retrieve hostgroups
@@ -246,7 +248,7 @@ namespace IcingaBusylightAgent
 
                 //Save settings
                 saveSettings();
-                this.Close();
+                Close();
             }
             catch (NullReferenceException)
             {
@@ -336,18 +338,18 @@ namespace IcingaBusylightAgent
 
         private void track_volume_Scroll(object sender, EventArgs e)
         {
-            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Value is '{0}', setting will be '{1}'", track_volume.Value, this.dictVol[track_volume.Value].ToString()), Properties.Settings.Default.log_level, 2);
+            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Value is '{0}', setting will be '{1}'", track_volume.Value, dictVol[track_volume.Value].ToString()), Properties.Settings.Default.log_level, 2);
 
             try
             {
                 //Demonstrate
                 var controller = new Busylight.SDK();
                 controller.Alert(new Busylight.BusylightColor { RedRgbValue = 0, GreenRgbValue = 0, BlueRgbValue = 0 }, dictSound[box_sound.SelectedItem.ToString()],
-                    this.dictVol[track_volume.Value]
+                    dictVol[track_volume.Value]
                     );
 
                 //Set label
-                lbl_track_volume.Text = this.dictVol[track_volume.Value].ToString();
+                lbl_track_volume.Text = dictVol[track_volume.Value].ToString();
             }
             catch (KeyNotFoundException)
             {
@@ -401,6 +403,10 @@ namespace IcingaBusylightAgent
             box_logmode.SelectedIndex = 0;
             loggerMode = "console";
             loggerLevel = 1;
+            txt_SpamThreshold.Text = "5";
+            chkEnableTips.Checked = true;
+            chkEnableLyncWorkaround.Checked = false;
+            chkEnableTipStart.Checked = true;
         }
 
         private void box_logmode_SelectedIndexChanged(object sender, EventArgs e)

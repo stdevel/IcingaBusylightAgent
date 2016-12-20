@@ -69,5 +69,15 @@ namespace IcingaBusylightAgent.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        /// </summary>
+        internal static System.Drawing.Icon icinga_update {
+            get {
+                object obj = ResourceManager.GetObject("icinga_update", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

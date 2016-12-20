@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 //HTML
 using System.Net;
 using System.IO;
-//Timer
-using System.Threading;
 //JSON
 using Newtonsoft.Json;
-using System.Data;
-//Busylight
-using Busylight;
-using System.Drawing;
 //MessageBox
 using System.Windows.Forms;
-//Sound
-using System.Media;
 //Localization
 using System.Resources;
 
@@ -50,95 +40,30 @@ namespace IcingaBusylightAgent
         private string password;
         private int updateInterval;
         private System.Threading.Timer updateTimer;
-        private string sound_file = "";
-        private SoundPlayer player;
-
-        //Notification colors
-        Dictionary<int, Busylight.BusylightColor> dictColor = new Dictionary<int, Busylight.BusylightColor>();
-
-        //Notification variables
-        Color color_up_ok, color_down_crit, color_unreach_warn, color_unknown;
-        BusylightJingleClip sound;
-        BusylightVolume volume;
 
         //Some Icinga2 getters/setters
-        public void setUrl(string new_url) { this.url = new_url; }
-        public string getUrl() { return this.url; }
-        public void setUsername(string new_user) { this.username = new_user; }
-        public string getUsername() { return this.username; }
-        public void setPassword(string new_pass) { this.password = new_pass; }
-        public string getPassword() { return this.password; }
-        public void setInterval(int new_interval) { this.updateInterval = new_interval; }
-        public int getInterval() { return this.updateInterval; }
+        public void setUrl(string new_url) { url = new_url; }
+        public string getUrl() { return url; }
+        public void setUsername(string new_user) { username = new_user; }
+        public string getUsername() { return username; }
+        public void setPassword(string new_pass) { password = new_pass; }
+        public string getPassword() { return password; }
+        public void setInterval(int new_interval) { updateInterval = new_interval; }
+        public int getInterval() { return updateInterval; }
 
-        /*
- * 
- * 
- *                                 if (entry.attrs.state == 3)
-                        {
-                            //unknown
-                            targetColor = new BusylightColor { RedRgbValue = this.color_unknown.R, GreenRgbValue = this.color_unknown.G, BlueRgbValue = this.color_unknown.B };
-                        }
-                        else if (entry.attrs.state == 2)
-                        {
-                            //critical
-                            targetColor = new BusylightColor { RedRgbValue = this.color_down_crit.R, GreenRgbValue = this.color_down_crit.G, BlueRgbValue = this.color_down_crit.B };
-                        }
-                        else
-                        {
-                            //warning
-                            targetColor = new BusylightColor { RedRgbValue = this.color_unreach_warn.R, GreenRgbValue = this.color_unreach_warn.G, BlueRgbValue = this.color_unreach_warn.B };
-                        }
- * */
+        //Data result
+        private Dictionary<string, int> failHosts = new Dictionary<string, int>();
+        private Dictionary<string, List<string>> failServices = new Dictionary<string, List<string>>();
 
-        //Some notification getters/setters
-        public void setColorUpOk(Color new_color)
-        {
-            this.color_up_ok = new_color;
-            //Add dictionary entry
-            dictColor.Add(0, new BusylightColor { RedRgbValue = new_color.R, GreenRgbValue = new_color.G, BlueRgbValue = new_color.B });
-        }
-        public Color getColorUpOk() { return this.color_up_ok; }
-        public void setColorDownCrit(Color new_color)
-        {
-            this.color_down_crit = new_color;
-            //Add dictionary entry
-            dictColor.Add(2, new BusylightColor { RedRgbValue = new_color.R, GreenRgbValue = new_color.G, BlueRgbValue = new_color.B });
-        }
-        public Color getColorDownCrit() { return this.color_down_crit; }
-        public void setColorUnreachWarn(Color new_color)
-        {
-            this.color_unreach_warn = new_color;
-            //Add dictionary entry
-            dictColor.Add(1, new BusylightColor { RedRgbValue = new_color.R, GreenRgbValue = new_color.G, BlueRgbValue = new_color.B });
-        }
-        public Color getColorUnreachWarn() { return this.color_unreach_warn; }
-        public void setColorUnknown(Color new_color)
-        {
-            this.color_unknown = new_color;
-            //Add dictionary entry
-            dictColor.Add(3, new BusylightColor { RedRgbValue = new_color.R, GreenRgbValue = new_color.G, BlueRgbValue = new_color.B });
-        }
-        public Color getColorUnknown() { return this.color_unknown; }
-        public void setSound(BusylightJingleClip new_sound) { this.sound = new_sound; }
-        public BusylightJingleClip getSound() { return this.sound; }
-        public void setVolume(BusylightVolume new_vol) { this.volume = new_vol; }
-        public BusylightVolume getVolume() { return this.volume; }
-        public void setSoundfile(string new_file)
-        {
-            if (new_file != "")
-            {
-                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Notification sound set to: '{0}'", new_file), Properties.Settings.Default.log_level, 2);
-                this.sound_file = new_file;
-                player = new SoundPlayer(new_file);
-            }
-        }
-        public string getSoundfile() { return this.sound_file; }
+        //updateInProgress delegate
+        public delegate void updateInProgress();
+        public event updateInProgress inProgress;
 
-        public Icinga2Client(string url, string username, string password, int interval,
-            Color upOk, Color downCrit, Color unreach, Color unknown,
-            BusylightJingleClip sound, BusylightVolume volume
-            )
+        //updateCompleted delegate
+        public delegate void updateCompleted(Dictionary<string, int> hosts, Dictionary<string, List<string>> services);
+        public event updateCompleted complete;
+
+        public Icinga2Client(string url, string username, string password, int interval)
         {
             //Set Icinga2 API client information
             setUrl(url);
@@ -146,20 +71,9 @@ namespace IcingaBusylightAgent
             setPassword(password);
             setInterval(interval);
 
-            //Set notification information
-            setColorUpOk(upOk);
-            setColorDownCrit(downCrit);
-            setColorUnreachWarn(unreach);
-            setColorUnknown(unknown);
-            setSound(sound);
-            setVolume(volume);
-
             //Set timer
             updateTimer = new System.Threading.Timer(updateData, null, interval, interval);
             SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Yes, this is Icinga2Client: URL='{0}', username='{1}', interval='{2}'", getUrl(), getUsername(), getInterval()), Properties.Settings.Default.log_level, 2);
-
-            //Enable SoundPlayer
-            if (this.sound_file != "") { player = new SoundPlayer(this.sound_file); }
 
             //INVENTORY TEST
             //getInventory("HostGroup");
@@ -170,9 +84,9 @@ namespace IcingaBusylightAgent
         {
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
             CredentialCache credentialCache = new CredentialCache();
-            credentialCache.Add(new System.Uri(IcingaBusylightAgent.Properties.Settings.Default.icinga_url), "Basic", new NetworkCredential(
-                IcingaBusylightAgent.Properties.Settings.Default.icinga_user,
-                IcingaBusylightAgent.Properties.Settings.Default.icinga_pass
+            credentialCache.Add(new Uri(Properties.Settings.Default.icinga_url), "Basic", new NetworkCredential(
+                Properties.Settings.Default.icinga_user,
+                Properties.Settings.Default.icinga_pass
                 ));
             return credentialCache;
         }
@@ -182,7 +96,9 @@ namespace IcingaBusylightAgent
             //Set default attributes if none given
             attributes = attributes ?? new string[] { "name", "display_name" };
 
-            //Return hostgroups
+            //TODO: Implement hostgroup filter!
+
+            //Get inventory
             SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Retrieving objects '{0}' with filter '{1}' and attributes '{2}'", type, filter, string.Join(", ", attributes)), Properties.Settings.Default.log_level, 2);
             string result = "";
             string post = "";
@@ -217,11 +133,8 @@ namespace IcingaBusylightAgent
                 post = "{ \"type\": \"" + type + "\"";
                 if(filter != "") { post = post + ", \"filter\": \"" + filter + "\""; }
                 post = post + ", \"attrs\": [ " + attrs + " ] }";
-                /*post = string.Format("{ \"type\": \"{0}\"", type);
-                if(filter != "") { post = string.Format("{0}, \"filter\": \"{1}\"", post, filter); }
-                post = string.Format("{0}, \"attrs\": [ {1} ] }", post, attrs);*/
                 //Get result
-                result = getHTMLPostResult(this.url + "v1/objects/" + url_prefix, post);
+                result = getHTMLPostResult(url + "v1/objects/" + url_prefix, post);
                 //BOO: Removing root level as I'm too lame to do this nicer...
                 result = result.Substring(11, (result.Length - 12));
                 SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("RESULT: '{0}'", result), Properties.Settings.Default.log_level, 2);
@@ -238,7 +151,7 @@ namespace IcingaBusylightAgent
             catch (UriFormatException e)
             {
                 //Connection could not be openend - URL invalid/host down?
-                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Invalid URL ({0}) (Host unreachable?) - error: {1}", this.url + "v1/objects/hosts", e.Message), Properties.Settings.Default.log_level);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Invalid URL ({0}) (Host unreachable?) - error: {1}", url + "v1/objects/hosts", e.Message), Properties.Settings.Default.log_level);
                 return null;
             }
             catch (ArgumentOutOfRangeException e)
@@ -345,17 +258,17 @@ namespace IcingaBusylightAgent
         public void updateData(object state)
         {
             //Update data
+            inProgress();
+            failHosts.Clear();
+            failServices.Clear();
 
             try
             {
-                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Updating data thread...", Properties.Settings.Default.log_level, 2);
-
                 lock (this)
                 {
-                    //Initializing Busylight
-                    var controller = new Busylight.SDK();
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Updating data thread...", Properties.Settings.Default.log_level, 2);
 
-                    //Check host information if requested
+                    //Update host information if enabled
                     if (Properties.Settings.Default.icinga_check_hosts == true)
                     {
                         try
@@ -365,15 +278,15 @@ namespace IcingaBusylightAgent
                             foreach (apiDataset entry in hostData)
                             {
                                 //Unacknowledged alert
-                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("UNACKNOWLEDGED HOST FAILURE!!! - Name: '{0}', State: '{1}', Acknowledgement: '{2}'",
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Found UNACKNOWLEDGED host failure - Name: '{0}', State: '{1}', Acknowledgement: '{2}'",
                                     entry.name, entry.attrs.state, entry.attrs.acknowledgement), Properties.Settings.Default.log_level, 1);
 
-                                //Play sound
-                                if (this.sound_file != "") { player.Play(); }
-                                //Flash light
-                                controller.Jingle(dictColor[Convert.ToInt32(entry.attrs.state)], this.sound, this.volume);
-                                Thread.Sleep(5000);
-                                controller.Terminate();
+                                //Add to list
+                                //failHosts.Add(entry.name);
+                                failHosts.Add(
+                                    entry.name,
+                                    Convert.ToInt32(entry.attrs.state)
+                                    );
                             }
                         }
                         catch (ArgumentNullException e)
@@ -388,26 +301,32 @@ namespace IcingaBusylightAgent
                         }
                     }
 
-                    //Check service information if requested
+                    //Update service information if enabled
                     if (Properties.Settings.Default.icinga_check_services == true)
                     {
                         try
                         {
-
                             //Get service information
                             List<apiDataset> serviceData = updateServices();
                             foreach (apiDataset entry in serviceData)
                             {
-                                //Unacknowledged alert
-                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("UNACKNOWLEDGED SERVICE FAILURE!!! Name: '{0}', Type: '{1}', State: '{2}', Acknowledgement: '{3}', Raw Service: '{4}'",
-                                    entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name), Properties.Settings.Default.log_level, 1);
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Digging trough apiDataset '{0}'", entry.name), Properties.Settings.Default.log_level, 1);
 
-                                //Play sound
-                                if (this.sound_file != "") { player.Play(); }
-                                //Flash light
-                                controller.Jingle(dictColor[Convert.ToInt32(entry.attrs.state)], this.sound, this.volume);
-                                Thread.Sleep(5000);
-                                controller.Terminate();
+                                //Unacknowledged alert
+                                string hostname = entry.name.Substring(0, entry.name.IndexOf('!'));
+                                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Found UNACKNOWLEDGED service failure - Hostname: '{0}' - Name: '{1}', Type: '{2}', State: '{3}', Acknowledgement: '{4}', Raw Service: '{5}'",
+                                    hostname, entry.name, entry.type, entry.attrs.state, entry.attrs.acknowledgement, entry.attrs.name), Properties.Settings.Default.log_level, 1);
+
+                                //Add to list
+                                if (failServices.ContainsKey(hostname) == false)
+                                {
+                                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Adding '{0}' to dictionary", hostname), Properties.Settings.Default.log_level, 2);
+                                    //Add dict entry if non-existent
+                                    failServices.Add(hostname, new List<string>());
+                                }
+                                else { SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("'{0}' already exists in dictionary", hostname), Properties.Settings.Default.log_level, 2); }
+                                
+                                failServices[hostname].Add(entry.name + ";" + entry.attrs.state);
                             }
                         }
                         catch (ArgumentNullException e)
@@ -422,18 +341,20 @@ namespace IcingaBusylightAgent
                         }
                     }
 
+                    //Return data
+                    complete(failHosts, failServices);
                 }
 
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException e)
             {
                 MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Unable to connrect to Icinga2 instance: '{0}'", e.Message), Properties.Settings.Default.log_level);
             }
-            catch (FormatException)
+            catch (FormatException e)
             {
                 MessageBox.Show(rm.GetString("msgbox_icinga_unavailable"), rm.GetString("msgbox_error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Unable to connect to Icinga2 instance", Properties.Settings.Default.log_level);
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Unable to connect to Icinga2 instance: '{0}'", e.Message), Properties.Settings.Default.log_level);
             }
         }
 

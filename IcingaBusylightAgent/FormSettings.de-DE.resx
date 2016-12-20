@@ -202,8 +202,40 @@
   <data name="tabp_notification.Text" xml:space="preserve">
     <value>Benachrichtigung</value>
   </data>
+  <data name="lbl_TipThreshold.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 13</value>
+  </data>
+  <data name="lbl_TipThreshold.Text" xml:space="preserve">
+    <value>Spam-Schwellwert:</value>
+  </data>
+  <data name="chkEnableTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 17</value>
+  </data>
+  <data name="chkEnableTips.Text" xml:space="preserve">
+    <value>Balloon Tips aktivieren</value>
+  </data>
   <data name="tabp_other.Text" xml:space="preserve">
     <value>Sonstiges</value>
+  </data>
+  <data name="chkEnableLyncWorkaround.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 17</value>
+  </data>
+  <data name="chkEnableLyncWorkaround.Text" xml:space="preserve">
+    <value>Lync-/SfB-Workaround aktivieren</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="chkEnableTipStart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="chkEnableTipStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkEnableTipStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>169, 17</value>
+  </data>
+  <data name="chkEnableTipStart.Text" xml:space="preserve">
+    <value>Version beim Starten anzeigen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Einstellungen</value>

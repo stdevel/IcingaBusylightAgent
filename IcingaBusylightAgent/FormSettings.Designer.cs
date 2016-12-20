@@ -71,7 +71,13 @@
             this.tabc_settings = new System.Windows.Forms.TabControl();
             this.tabp_icinga2 = new System.Windows.Forms.TabPage();
             this.tabp_notification = new System.Windows.Forms.TabPage();
+            this.txt_SpamThreshold = new System.Windows.Forms.TextBox();
+            this.lbl_TipThreshold = new System.Windows.Forms.Label();
+            this.lbl_balloontips = new System.Windows.Forms.Label();
+            this.chkEnableTips = new System.Windows.Forms.CheckBox();
             this.tabp_other = new System.Windows.Forms.TabPage();
+            this.chkEnableTipStart = new System.Windows.Forms.CheckBox();
+            this.chkEnableLyncWorkaround = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.track_volume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.track_timer)).BeginInit();
             this.tabc_settings.SuspendLayout();
@@ -120,11 +126,11 @@
             // 
             // box_sound
             // 
-            resources.ApplyResources(this.box_sound, "box_sound");
             this.box_sound.FormattingEnabled = true;
             this.box_sound.Items.AddRange(new object[] {
             resources.GetString("box_sound.Items"),
             resources.GetString("box_sound.Items1")});
+            resources.ApplyResources(this.box_sound, "box_sound");
             this.box_sound.Name = "box_sound";
             this.box_sound.SelectedIndexChanged += new System.EventHandler(this.box_sound_SelectedIndexChanged);
             // 
@@ -173,9 +179,9 @@
             // 
             // track_volume
             // 
-            resources.ApplyResources(this.track_volume, "track_volume");
             this.track_volume.BackColor = System.Drawing.SystemColors.Window;
             this.track_volume.LargeChange = 1;
+            resources.ApplyResources(this.track_volume, "track_volume");
             this.track_volume.Maximum = 4;
             this.track_volume.Name = "track_volume";
             this.track_volume.Scroll += new System.EventHandler(this.track_volume_Scroll);
@@ -187,8 +193,8 @@
             // 
             // track_timer
             // 
-            resources.ApplyResources(this.track_timer, "track_timer");
             this.track_timer.BackColor = System.Drawing.SystemColors.Window;
+            resources.ApplyResources(this.track_timer, "track_timer");
             this.track_timer.Maximum = 60;
             this.track_timer.Minimum = 1;
             this.track_timer.Name = "track_timer";
@@ -253,8 +259,8 @@
             // 
             // lbox_hostgroups
             // 
-            resources.ApplyResources(this.lbox_hostgroups, "lbox_hostgroups");
             this.lbox_hostgroups.FormattingEnabled = true;
+            resources.ApplyResources(this.lbox_hostgroups, "lbox_hostgroups");
             this.lbox_hostgroups.Name = "lbox_hostgroups";
             this.lbox_hostgroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             // 
@@ -270,8 +276,8 @@
             // 
             // box_logmode
             // 
-            resources.ApplyResources(this.box_logmode, "box_logmode");
             this.box_logmode.FormattingEnabled = true;
+            resources.ApplyResources(this.box_logmode, "box_logmode");
             this.box_logmode.Name = "box_logmode";
             this.box_logmode.SelectedIndexChanged += new System.EventHandler(this.box_logmode_SelectedIndexChanged);
             // 
@@ -289,23 +295,22 @@
             // 
             // box_loglevel
             // 
-            resources.ApplyResources(this.box_loglevel, "box_loglevel");
             this.box_loglevel.FormattingEnabled = true;
+            resources.ApplyResources(this.box_loglevel, "box_loglevel");
             this.box_loglevel.Name = "box_loglevel";
             this.box_loglevel.SelectedIndexChanged += new System.EventHandler(this.box_loglevel_SelectedIndexChanged);
             // 
             // tabc_settings
             // 
-            resources.ApplyResources(this.tabc_settings, "tabc_settings");
             this.tabc_settings.Controls.Add(this.tabp_icinga2);
             this.tabc_settings.Controls.Add(this.tabp_notification);
             this.tabc_settings.Controls.Add(this.tabp_other);
+            resources.ApplyResources(this.tabc_settings, "tabc_settings");
             this.tabc_settings.Name = "tabc_settings";
             this.tabc_settings.SelectedIndex = 0;
             // 
             // tabp_icinga2
             // 
-            resources.ApplyResources(this.tabp_icinga2, "tabp_icinga2");
             this.tabp_icinga2.Controls.Add(this.lbl_url);
             this.tabp_icinga2.Controls.Add(this.lbl_username);
             this.tabp_icinga2.Controls.Add(this.lbl_password);
@@ -321,12 +326,16 @@
             this.tabp_icinga2.Controls.Add(this.lbl_checks);
             this.tabp_icinga2.Controls.Add(this.chkHosts);
             this.tabp_icinga2.Controls.Add(this.chkServices);
+            resources.ApplyResources(this.tabp_icinga2, "tabp_icinga2");
             this.tabp_icinga2.Name = "tabp_icinga2";
             this.tabp_icinga2.UseVisualStyleBackColor = true;
             // 
             // tabp_notification
             // 
-            resources.ApplyResources(this.tabp_notification, "tabp_notification");
+            this.tabp_notification.Controls.Add(this.txt_SpamThreshold);
+            this.tabp_notification.Controls.Add(this.lbl_TipThreshold);
+            this.tabp_notification.Controls.Add(this.lbl_balloontips);
+            this.tabp_notification.Controls.Add(this.chkEnableTips);
             this.tabp_notification.Controls.Add(this.lbl_sounds);
             this.tabp_notification.Controls.Add(this.box_sound);
             this.tabp_notification.Controls.Add(this.lbl_volume);
@@ -340,18 +349,54 @@
             this.tabp_notification.Controls.Add(this.btn_unreach_warn);
             this.tabp_notification.Controls.Add(this.lbl_colors);
             this.tabp_notification.Controls.Add(this.btn_down_crit);
+            resources.ApplyResources(this.tabp_notification, "tabp_notification");
             this.tabp_notification.Name = "tabp_notification";
             this.tabp_notification.UseVisualStyleBackColor = true;
             // 
+            // txt_SpamThreshold
+            // 
+            resources.ApplyResources(this.txt_SpamThreshold, "txt_SpamThreshold");
+            this.txt_SpamThreshold.Name = "txt_SpamThreshold";
+            // 
+            // lbl_TipThreshold
+            // 
+            resources.ApplyResources(this.lbl_TipThreshold, "lbl_TipThreshold");
+            this.lbl_TipThreshold.Name = "lbl_TipThreshold";
+            // 
+            // lbl_balloontips
+            // 
+            resources.ApplyResources(this.lbl_balloontips, "lbl_balloontips");
+            this.lbl_balloontips.Name = "lbl_balloontips";
+            // 
+            // chkEnableTips
+            // 
+            resources.ApplyResources(this.chkEnableTips, "chkEnableTips");
+            this.chkEnableTips.Name = "chkEnableTips";
+            this.chkEnableTips.UseVisualStyleBackColor = true;
+            // 
             // tabp_other
             // 
-            resources.ApplyResources(this.tabp_other, "tabp_other");
+            this.tabp_other.Controls.Add(this.chkEnableTipStart);
+            this.tabp_other.Controls.Add(this.chkEnableLyncWorkaround);
             this.tabp_other.Controls.Add(this.lbl_logmode);
             this.tabp_other.Controls.Add(this.lbl_loglevel);
             this.tabp_other.Controls.Add(this.box_logmode);
             this.tabp_other.Controls.Add(this.box_loglevel);
+            resources.ApplyResources(this.tabp_other, "tabp_other");
             this.tabp_other.Name = "tabp_other";
             this.tabp_other.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableTipStart
+            // 
+            resources.ApplyResources(this.chkEnableTipStart, "chkEnableTipStart");
+            this.chkEnableTipStart.Name = "chkEnableTipStart";
+            this.chkEnableTipStart.UseVisualStyleBackColor = true;
+            // 
+            // chkEnableLyncWorkaround
+            // 
+            resources.ApplyResources(this.chkEnableLyncWorkaround, "chkEnableLyncWorkaround");
+            this.chkEnableLyncWorkaround.Name = "chkEnableLyncWorkaround";
+            this.chkEnableLyncWorkaround.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
@@ -423,6 +468,12 @@
         private System.Windows.Forms.TabPage tabp_icinga2;
         private System.Windows.Forms.TabPage tabp_notification;
         private System.Windows.Forms.TabPage tabp_other;
+        private System.Windows.Forms.Label lbl_balloontips;
+        private System.Windows.Forms.CheckBox chkEnableTips;
+        private System.Windows.Forms.Label lbl_TipThreshold;
+        private System.Windows.Forms.TextBox txt_SpamThreshold;
+        private System.Windows.Forms.CheckBox chkEnableLyncWorkaround;
+        private System.Windows.Forms.CheckBox chkEnableTipStart;
     }
 }
 

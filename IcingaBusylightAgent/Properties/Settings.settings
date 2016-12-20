@@ -15,7 +15,7 @@
       <Value Profile="(Default)">IM2</Value>
     </Setting>
     <Setting Name="sound_volume" Type="Busylight.BusylightVolume" Scope="User">
-      <Value Profile="(Default)">Max</Value>
+      <Value Profile="(Default)">Middle</Value>
     </Setting>
     <Setting Name="color_up_ok" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Lime</Value>
@@ -29,11 +29,8 @@
     <Setting Name="color_unknown" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Fuchsia</Value>
     </Setting>
-    <Setting Name="debug" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="icinga_update_interval" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="icinga_check_hosts" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -55,6 +52,18 @@
     </Setting>
     <Setting Name="log_level" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="spam_thres" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+    <Setting Name="balloon_enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="lync_enable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="balloon_enable_start" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

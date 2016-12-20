@@ -73,7 +73,7 @@ namespace IcingaBusylightAgent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Max")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Middle")]
         public global::Busylight.BusylightVolume sound_volume {
             get {
                 return ((global::Busylight.BusylightVolume)(this["sound_volume"]));
@@ -133,19 +133,7 @@ namespace IcingaBusylightAgent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool debug {
-            get {
-                return ((bool)(this["debug"]));
-            }
-            set {
-                this["debug"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int icinga_update_interval {
             get {
                 return ((int)(this["icinga_update_interval"]));
@@ -236,6 +224,54 @@ namespace IcingaBusylightAgent.Properties {
             }
             set {
                 this["log_level"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public int spam_thres {
+            get {
+                return ((int)(this["spam_thres"]));
+            }
+            set {
+                this["spam_thres"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool balloon_enable {
+            get {
+                return ((bool)(this["balloon_enable"]));
+            }
+            set {
+                this["balloon_enable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool lync_enable {
+            get {
+                return ((bool)(this["lync_enable"]));
+            }
+            set {
+                this["lync_enable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool balloon_enable_start {
+            get {
+                return ((bool)(this["balloon_enable_start"]));
+            }
+            set {
+                this["balloon_enable_start"] = value;
             }
         }
     }

@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="balloon_chaos_msg" xml:space="preserve">
+    <value>X Hosts und Y Services befinden sich in einem fehlerhaften Zustand...</value>
+    <comment>BalloonTip message, Chaos</comment>
+  </data>
+  <data name="balloon_chaos_title" xml:space="preserve">
+    <value>Scheiße passiert</value>
+    <comment>BalloonTip title, Chaos</comment>
+  </data>
   <data name="lbl_minutes" xml:space="preserve">
     <value>Minute(n)</value>
     <comment>Label snippet, minute(s)</comment>
@@ -172,6 +180,30 @@
   <data name="msgbox_icinga_unavailable" xml:space="preserve">
     <value>Verbindung zur Icinga2-Instanz konnte nicht hergestellt werden, bitte Einstellungen überprüfen!</value>
     <comment>MsgBox, Unable to connect</comment>
+  </data>
+  <data name="msgbox_update_running" xml:space="preserve">
+    <value>Update already in progress!</value>
+    <comment>MsgBox, Update running</comment>
+  </data>
+  <data name="state_0" xml:space="preserve">
+    <value>ok</value>
+    <comment>Icinga state, 0</comment>
+  </data>
+  <data name="state_1" xml:space="preserve">
+    <value>warnend</value>
+    <comment>Icinga state, 1</comment>
+  </data>
+  <data name="state_2" xml:space="preserve">
+    <value>kritisch</value>
+    <comment>Icinga state, 2</comment>
+  </data>
+  <data name="state_3" xml:space="preserve">
+    <value>unbekannt</value>
+    <comment>Icinga state, 3</comment>
+  </data>
+  <data name="state_on" xml:space="preserve">
+    <value>auf</value>
+    <comment>Service on</comment>
   </data>
   <data name="welcome_message" xml:space="preserve">
     <value>ist aktiv</value>

@@ -61,6 +61,24 @@ namespace IcingaBusylightAgent {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die There are X hosts and Y services in faulty state... ähnelt.
+        /// </summary>
+        internal static string balloon_chaos_msg {
+            get {
+                return ResourceManager.GetString("balloon_chaos_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die When the shit hits the fan... ähnelt.
+        /// </summary>
+        internal static string balloon_chaos_title {
+            get {
+                return ResourceManager.GetString("balloon_chaos_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die minute(s) ähnelt.
         /// </summary>
         internal static string lbl_minutes {
@@ -183,6 +201,60 @@ namespace IcingaBusylightAgent {
         internal static string msgbox_icinga_unavailable {
             get {
                 return ResourceManager.GetString("msgbox_icinga_unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Eine Aktualisierung läuft bereits! ähnelt.
+        /// </summary>
+        internal static string msgbox_update_running {
+            get {
+                return ResourceManager.GetString("msgbox_update_running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die ok ähnelt.
+        /// </summary>
+        internal static string state_0 {
+            get {
+                return ResourceManager.GetString("state_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die warning ähnelt.
+        /// </summary>
+        internal static string state_1 {
+            get {
+                return ResourceManager.GetString("state_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die critical ähnelt.
+        /// </summary>
+        internal static string state_2 {
+            get {
+                return ResourceManager.GetString("state_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die unknown ähnelt.
+        /// </summary>
+        internal static string state_3 {
+            get {
+                return ResourceManager.GetString("state_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die auf ähnelt.
+        /// </summary>
+        internal static string state_on {
+            get {
+                return ResourceManager.GetString("state_on", resourceCulture);
             }
         }
         
