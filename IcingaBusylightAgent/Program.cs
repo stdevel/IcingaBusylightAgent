@@ -91,6 +91,20 @@ namespace IcingaBusylightAgent
             trayIcon.ShowBalloonTip(5000);
         }
 
+        private void updateTime(bool inProgress=false)
+        {
+            if (inProgress == true)
+            {
+                //Update in progress
+                trayIcon.ContextMenu.MenuItems[1].Text = string.Format("{0} ({1})", rm.GetString("mnu_update"), rm.GetString("mnu_update_progress"));
+            }
+            else
+            {
+                //Set last update
+                trayIcon.ContextMenu.MenuItems[1].Text = string.Format("{0} ({1} {2})", rm.GetString("mnu_update"), rm.GetString("mnu_update_last"), DateTime.Now.ToString("HH:mm"));
+            }
+        }
+
         public AgentContext()
         {
             //Import state strings
@@ -207,6 +221,12 @@ namespace IcingaBusylightAgent
                 (Properties.Settings.Default.icinga_update_interval * 1000 * 60)
                 );
 
+            //Set hostgroup filter
+            if (Properties.Settings.Default.icinga_hostgroups.Length > 0)
+            {
+                workerObject.setHostgroups(Properties.Settings.Default.icinga_hostgroups.Split(';'));
+            }
+
             //Update _all_ the data
             dataThread = new Thread(workerObject.updateData);
             //Set update event
@@ -218,6 +238,7 @@ namespace IcingaBusylightAgent
         {
             //Update in progress
             trayIcon.Icon = Properties.Resources.icinga_update;
+            updateTime(true);
         }
 
         private void WorkerObject_complete(Dictionary<string, int> hosts, Dictionary<string, List<string>> services)
@@ -227,6 +248,7 @@ namespace IcingaBusylightAgent
             //Set data and alert failures
             failHosts = hosts;
             failServices = services;
+            updateTime();
             alertInventory();
         }
 

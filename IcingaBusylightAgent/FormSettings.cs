@@ -167,13 +167,16 @@ namespace IcingaBusylightAgent
             //Set hostgroup filter
             string new_filter = "";
             string temp = null;
-            for(int i=0; i < lbox_hostgroups.SelectedItems.Count; i++)
+            if (lbox_hostgroups.SelectedItems.Count > 0)
             {
-                temp = lbox_hostgroups.SelectedItems[i].ToString();
-                temp = temp.Substring(0, temp.IndexOf(" "));
-                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Adding entry to hostgroup filter: '{0}'", temp), Properties.Settings.Default.log_level, 2);
-                if (new_filter == "") { new_filter = temp; }
-                else { new_filter = string.Format("{0};{1}", new_filter, temp); }
+                for (int i = 0; i < lbox_hostgroups.SelectedItems.Count; i++)
+                {
+                    temp = lbox_hostgroups.SelectedItems[i].ToString();
+                    temp = temp.Substring(0, temp.IndexOf(" "));
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Adding entry to hostgroup filter: '{0}'", temp), Properties.Settings.Default.log_level, 2);
+                    if (new_filter == "") { new_filter = temp; }
+                    else { new_filter = string.Format("{0};{1}", new_filter, temp); }
+                }
             }
             Properties.Settings.Default.icinga_hostgroups = new_filter;
 

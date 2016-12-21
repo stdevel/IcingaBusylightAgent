@@ -178,6 +178,24 @@ namespace IcingaBusylightAgent {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die last update: ähnelt.
+        /// </summary>
+        internal static string mnu_update_last {
+            get {
+                return ResourceManager.GetString("mnu_update_last", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die processing... ähnelt.
+        /// </summary>
+        internal static string mnu_update_progress {
+            get {
+                return ResourceManager.GetString("mnu_update_progress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
         /// </summary>
         internal static string msgbox_error {

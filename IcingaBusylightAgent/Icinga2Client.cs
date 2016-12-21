@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Windows.Forms;
 //Localization
 using System.Resources;
+//Random string
+using System.Linq;
 
 namespace IcingaBusylightAgent
 {
@@ -40,6 +42,7 @@ namespace IcingaBusylightAgent
         private string password;
         private int updateInterval;
         private System.Threading.Timer updateTimer;
+        private List<string> hostgroups = new List<string>();
 
         //Some Icinga2 getters/setters
         public void setUrl(string new_url) { url = new_url; }
@@ -50,6 +53,8 @@ namespace IcingaBusylightAgent
         public string getPassword() { return password; }
         public void setInterval(int new_interval) { updateInterval = new_interval; }
         public int getInterval() { return updateInterval; }
+        public void setHostgroups(string[] new_hostgroups) { hostgroups = new List<string>(new_hostgroups); }
+        public string[] getHostgroups() { return hostgroups.ToArray(); }
 
         //Data result
         private Dictionary<string, int> failHosts = new Dictionary<string, int>();
@@ -91,12 +96,47 @@ namespace IcingaBusylightAgent
             return credentialCache;
         }
 
+        private string randomString(int length)
+        {
+            //return a random string
+            //This function is proudly inspired by http://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
         public List<apiDataset> getInventory(string type = "Hosts", string filter = "", string[] attributes = null)
         {
             //Set default attributes if none given
             attributes = attributes ?? new string[] { "name", "display_name" };
 
-            //TODO: Implement hostgroup filter!
+            //OKAY - THE FOLLOWING LINES ARE UGLY AS HELL
+
+            //Implement hostgroup filter
+            string temp_filter;
+            if(hostgroups.Count > 0) { temp_filter = "("; }
+            else { temp_filter = ""; }
+            Dictionary<string, string> tempVars = new Dictionary<string, string>();
+            //OMG I'M GOING TO PUKE
+            for(int i=0; i < hostgroups.Count; i++)
+            {
+                if (hostgroups[i].Length > 0)
+                {
+                    string temp_var = randomString(hostgroups[i].Length);
+                    temp_filter = temp_filter + temp_var + " in host.groups";
+                    if (i < hostgroups.Count-1) { temp_filter = temp_filter + " || "; }
+                    try
+                    {
+                        tempVars.Add(temp_var, hostgroups[i]);
+                    }
+                    catch(ArgumentException e)
+                    {
+                        Console.WriteLine("Another exception doing ugly string messup: " + e.Message);
+                    }
+                }
+            }
+            if (hostgroups.Count > 0) { temp_filter = temp_filter + ") && "; }
 
             //Get inventory
             SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Retrieving objects '{0}' with filter '{1}' and attributes '{2}'", type, filter, string.Join(", ", attributes)), Properties.Settings.Default.log_level, 2);
@@ -129,10 +169,41 @@ namespace IcingaBusylightAgent
                     else { attrs = string.Format("{0}, \"{1}\"", attrs, attribute); }
                 }
 
+                //VERSION WITHOUT FILTER
+                //Set POST data
+                /*post = "{ \"type\": \"" + type + "\"";
+                if (filter != "") { post = post + ", \"filter\": \"" + filter + "\""; }
+                post = post + ", \"attrs\": [ " + attrs + " ] }";*/
+
                 //Set POST data
                 post = "{ \"type\": \"" + type + "\"";
+                filter = temp_filter + filter;
                 if(filter != "") { post = post + ", \"filter\": \"" + filter + "\""; }
+
+                //Append vars if defined
+                if (tempVars.Count > 0)
+                {
+                    //THIS IS SO UGLY I WANT TO PUKE
+                    string vars = ", \"filter_vars\": {";
+                    foreach (string var in tempVars.Keys)
+                    {
+                        if (var.Equals(tempVars.Keys.Last()))
+                        {
+                            //last entry
+                            vars = vars + "\"" + var + "\": \"" + tempVars[var] + "\"";
+                        }
+                        else
+                        {
+                            //entries remaining
+                            vars = vars + "\"" + var + "\": \"" + tempVars[var] + "\", ";
+                        }
+                    }
+                    vars = vars + " }";
+                    post = post + vars;
+                }
+
                 post = post + ", \"attrs\": [ " + attrs + " ] }";
+
                 //Get result
                 result = getHTMLPostResult(url + "v1/objects/" + url_prefix, post);
                 //BOO: Removing root level as I'm too lame to do this nicer...

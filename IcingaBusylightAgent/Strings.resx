@@ -169,6 +169,14 @@
     <value>Update</value>
     <comment>ContextMnu TrayIcon, Update</comment>
   </data>
+  <data name="mnu_update_last" xml:space="preserve">
+    <value>last update:</value>
+    <comment>ContextMnu TrayIcon, Last update</comment>
+  </data>
+  <data name="mnu_update_progress" xml:space="preserve">
+    <value>processing...</value>
+    <comment>ContextMnu TrayIcon, Update in progress</comment>
+  </data>
   <data name="msgbox_error" xml:space="preserve">
     <value>Error</value>
     <comment>MsgBox, Error</comment>

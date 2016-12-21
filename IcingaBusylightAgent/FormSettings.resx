@@ -1002,6 +1002,63 @@
   <data name="&gt;&gt;box_loglevel.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="&gt;&gt;tabp_icinga2.Name" xml:space="preserve">
+    <value>tabp_icinga2</value>
+  </data>
+  <data name="&gt;&gt;tabp_icinga2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabp_icinga2.Parent" xml:space="preserve">
+    <value>tabc_settings</value>
+  </data>
+  <data name="&gt;&gt;tabp_icinga2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.Name" xml:space="preserve">
+    <value>tabp_notification</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.Parent" xml:space="preserve">
+    <value>tabc_settings</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabp_other.Name" xml:space="preserve">
+    <value>tabp_other</value>
+  </data>
+  <data name="&gt;&gt;tabp_other.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabp_other.Parent" xml:space="preserve">
+    <value>tabc_settings</value>
+  </data>
+  <data name="&gt;&gt;tabp_other.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabc_settings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 1</value>
+  </data>
+  <data name="tabc_settings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>384, 432</value>
+  </data>
+  <data name="tabc_settings.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;tabc_settings.Name" xml:space="preserve">
+    <value>tabc_settings</value>
+  </data>
+  <data name="&gt;&gt;tabc_settings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabc_settings.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabc_settings.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="tabp_icinga2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
@@ -1028,6 +1085,81 @@
   </data>
   <data name="&gt;&gt;tabp_icinga2.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;txt_SpamThreshold.Name" xml:space="preserve">
+    <value>txt_SpamThreshold</value>
+  </data>
+  <data name="&gt;&gt;txt_SpamThreshold.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txt_SpamThreshold.Parent" xml:space="preserve">
+    <value>tabp_notification</value>
+  </data>
+  <data name="&gt;&gt;txt_SpamThreshold.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lbl_TipThreshold.Name" xml:space="preserve">
+    <value>lbl_TipThreshold</value>
+  </data>
+  <data name="&gt;&gt;lbl_TipThreshold.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbl_TipThreshold.Parent" xml:space="preserve">
+    <value>tabp_notification</value>
+  </data>
+  <data name="&gt;&gt;lbl_TipThreshold.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lbl_balloontips.Name" xml:space="preserve">
+    <value>lbl_balloontips</value>
+  </data>
+  <data name="&gt;&gt;lbl_balloontips.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbl_balloontips.Parent" xml:space="preserve">
+    <value>tabp_notification</value>
+  </data>
+  <data name="&gt;&gt;lbl_balloontips.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTips.Name" xml:space="preserve">
+    <value>chkEnableTips</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTips.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTips.Parent" xml:space="preserve">
+    <value>tabp_notification</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTips.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tabp_notification.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabp_notification.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabp_notification.Size" type="System.Drawing.Size, System.Drawing">
+    <value>376, 406</value>
+  </data>
+  <data name="tabp_notification.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabp_notification.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.Name" xml:space="preserve">
+    <value>tabp_notification</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.Parent" xml:space="preserve">
+    <value>tabc_settings</value>
+  </data>
+  <data name="&gt;&gt;tabp_notification.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="txt_SpamThreshold.Location" type="System.Drawing.Point, System.Drawing">
     <value>283, 301</value>
@@ -1137,32 +1269,53 @@
   <data name="&gt;&gt;chkEnableTips.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="tabp_notification.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="&gt;&gt;chkEnableTipStart.Name" xml:space="preserve">
+    <value>chkEnableTipStart</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTipStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTipStart.Parent" xml:space="preserve">
+    <value>tabp_other</value>
+  </data>
+  <data name="&gt;&gt;chkEnableTipStart.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;chkEnableLyncWorkaround.Name" xml:space="preserve">
+    <value>chkEnableLyncWorkaround</value>
+  </data>
+  <data name="&gt;&gt;chkEnableLyncWorkaround.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkEnableLyncWorkaround.Parent" xml:space="preserve">
+    <value>tabp_other</value>
+  </data>
+  <data name="&gt;&gt;chkEnableLyncWorkaround.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabp_other.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tabp_notification.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabp_notification.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabp_other.Size" type="System.Drawing.Size, System.Drawing">
     <value>376, 406</value>
   </data>
-  <data name="tabp_notification.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="tabp_other.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="tabp_notification.Text" xml:space="preserve">
-    <value>Notification</value>
+  <data name="tabp_other.Text" xml:space="preserve">
+    <value>Other</value>
   </data>
-  <data name="&gt;&gt;tabp_notification.Name" xml:space="preserve">
-    <value>tabp_notification</value>
+  <data name="&gt;&gt;tabp_other.Name" xml:space="preserve">
+    <value>tabp_other</value>
   </data>
-  <data name="&gt;&gt;tabp_notification.Type" xml:space="preserve">
+  <data name="&gt;&gt;tabp_other.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabp_notification.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabp_other.Parent" xml:space="preserve">
     <value>tabc_settings</value>
   </data>
-  <data name="&gt;&gt;tabp_notification.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;tabp_other.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="chkEnableTipStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 113</value>
@@ -1214,51 +1367,6 @@
   </data>
   <data name="&gt;&gt;chkEnableLyncWorkaround.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="tabp_other.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabp_other.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 406</value>
-  </data>
-  <data name="tabp_other.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabp_other.Text" xml:space="preserve">
-    <value>Other</value>
-  </data>
-  <data name="&gt;&gt;tabp_other.Name" xml:space="preserve">
-    <value>tabp_other</value>
-  </data>
-  <data name="&gt;&gt;tabp_other.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabp_other.Parent" xml:space="preserve">
-    <value>tabc_settings</value>
-  </data>
-  <data name="&gt;&gt;tabp_other.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tabc_settings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 1</value>
-  </data>
-  <data name="tabc_settings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>384, 432</value>
-  </data>
-  <data name="tabc_settings.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
-  </data>
-  <data name="&gt;&gt;tabc_settings.Name" xml:space="preserve">
-    <value>tabc_settings</value>
-  </data>
-  <data name="&gt;&gt;tabc_settings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabc_settings.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabc_settings.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
