@@ -23,4 +23,4 @@ To configure the agent, you need to specify the following settings:
 - API password
 
 A configure dialog is started by right-clicking the trayicon and clicking ``Configure``. This dialog also gives you additional possibilities for customization (*e.g. sounds, colors, hostgroup filters,...*).
-See the [wiki](https://github.com/stdevel/IcingaBusylightAgent/wiki/configuration-client
+See the [wiki](https://github.com/stdevel/IcingaBusylightAgent/wiki/configuration-client) for more details.
