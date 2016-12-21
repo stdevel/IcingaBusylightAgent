@@ -258,9 +258,16 @@ namespace IcingaBusylightAgent
         public void updateData(object state)
         {
             //Update data
-            inProgress();
-            failHosts.Clear();
-            failServices.Clear();
+            try
+            {
+                inProgress();
+                failHosts.Clear();
+                failServices.Clear();
+            }
+            catch(NullReferenceException e)
+            {
+                SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Null reference: '{0}'", e.Message), Properties.Settings.Default.log_level, 2);
+            }
 
             try
             {

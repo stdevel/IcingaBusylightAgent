@@ -12,6 +12,8 @@ using Busylight;
 using System.Drawing;
 //Sound
 using System.Media;
+//Skype
+using Microsoft.Lync.Model;
 
 namespace IcingaBusylightAgent
 {
@@ -62,6 +64,20 @@ namespace IcingaBusylightAgent
         BusylightVolume volume;
         private string sound_file;
         private SoundPlayer player;
+
+        //Skype for business
+        private LyncClient lyncClient;
+        private Dictionary<ContactAvailability, BusylightColor> dictSkypeColor = new Dictionary<ContactAvailability, BusylightColor>()
+        {
+            { ContactAvailability.Free, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_online.R, GreenRgbValue = Properties.Settings.Default.skype_online.G, BlueRgbValue = Properties.Settings.Default.skype_online.B } },
+            { ContactAvailability.FreeIdle, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_away.R, GreenRgbValue = Properties.Settings.Default.skype_away.G, BlueRgbValue = Properties.Settings.Default.skype_away.B } },
+            { ContactAvailability.Away, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_away.R, GreenRgbValue = Properties.Settings.Default.skype_away.G, BlueRgbValue = Properties.Settings.Default.skype_away.B } },
+            { ContactAvailability.TemporarilyAway, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_away.R, GreenRgbValue = Properties.Settings.Default.skype_away.G, BlueRgbValue = Properties.Settings.Default.skype_away.B } },
+            { ContactAvailability.Busy, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_busy.R, GreenRgbValue = Properties.Settings.Default.skype_busy.G, BlueRgbValue = Properties.Settings.Default.skype_busy.B } },
+            { ContactAvailability.BusyIdle, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_busy.R, GreenRgbValue = Properties.Settings.Default.skype_busy.G, BlueRgbValue = Properties.Settings.Default.skype_busy.B } },
+            { ContactAvailability.DoNotDisturb, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_dnd.R, GreenRgbValue = Properties.Settings.Default.skype_dnd.G, BlueRgbValue = Properties.Settings.Default.skype_dnd.B } },
+            { ContactAvailability.Offline, new BusylightColor { RedRgbValue = Properties.Settings.Default.skype_other.R, GreenRgbValue = Properties.Settings.Default.skype_other.G, BlueRgbValue = Properties.Settings.Default.skype_other.B } }
+        };
 
         //Translate _all_ the strings!
         ResourceManager rm = Strings.ResourceManager;
@@ -313,8 +329,34 @@ namespace IcingaBusylightAgent
                 {
                     SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Invalid operation: '{0}'", e.Message), Properties.Settings.Default.log_level, 2);
                 }
+
+                //Reset Lync/SfB state if enabled
+                if(Properties.Settings.Default.lync_enable == true)
+                {
+                    SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, "Resetting Lync/SfB state...", Properties.Settings.Default.log_level, 2);
+                    try
+                    {
+                        lyncClient = LyncClient.GetClient();
+                        if (lyncClient.State == ClientState.SignedIn)
+                        {
+                            //Read state
+                            ContactAvailability myAvailability = (ContactAvailability)lyncClient.Self.Contact.GetContactInformation(ContactInformationType.Availability);
+                            SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Lync/SfB state is '{0}'", myAvailability.ToString()), Properties.Settings.Default.log_level, 2);
+                            //Set color
+                            var controller = new Busylight.SDK();
+                            controller.Light(dictSkypeColor[myAvailability]);
+                        }
+                    }
+                    catch(System.Runtime.InteropServices.MarshalDirectiveException e)
+                    {
+                        SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Unable to read Lync/SfB state: '{0}'", e.Message), Properties.Settings.Default.log_level, 0);
+                    }
+                    catch (Exception e)
+                    {
+                        SimpleLoggerHelper.Log(Properties.Settings.Default.log_mode, string.Format("Unable to read Lync/SfB state: '{0}'", e.Message), Properties.Settings.Default.log_level, 0);
+                    }
+                }
             }
-            //TODO: Reset to Skype state
         }
 
         private void update(object sender, EventArgs e)

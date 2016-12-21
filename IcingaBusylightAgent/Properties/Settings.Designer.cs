@@ -25,7 +25,7 @@ namespace IcingaBusylightAgent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://st-mon03.stankowic.loc:5665/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://myhost.localdomain.loc:5665/")]
         public string icinga_url {
             get {
                 return ((string)(this["icinga_url"]));
@@ -37,7 +37,7 @@ namespace IcingaBusylightAgent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("busylight")]
+        [global::System.Configuration.DefaultSettingValueAttribute("simone")]
         public string icinga_user {
             get {
                 return ((string)(this["icinga_user"]));
@@ -49,7 +49,7 @@ namespace IcingaBusylightAgent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("IchSeheAlles")]
+        [global::System.Configuration.DefaultSettingValueAttribute("giertz")]
         public string icinga_pass {
             get {
                 return ((string)(this["icinga_pass"]));
@@ -272,6 +272,66 @@ namespace IcingaBusylightAgent.Properties {
             }
             set {
                 this["balloon_enable_start"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+        public global::System.Drawing.Color skype_online {
+            get {
+                return ((global::System.Drawing.Color)(this["skype_online"]));
+            }
+            set {
+                this["skype_online"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color skype_busy {
+            get {
+                return ((global::System.Drawing.Color)(this["skype_busy"]));
+            }
+            set {
+                this["skype_busy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fuchsia")]
+        public global::System.Drawing.Color skype_dnd {
+            get {
+                return ((global::System.Drawing.Color)(this["skype_dnd"]));
+            }
+            set {
+                this["skype_dnd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Yellow")]
+        public global::System.Drawing.Color skype_away {
+            get {
+                return ((global::System.Drawing.Color)(this["skype_away"]));
+            }
+            set {
+                this["skype_away"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color skype_other {
+            get {
+                return ((global::System.Drawing.Color)(this["skype_other"]));
+            }
+            set {
+                this["skype_other"] = value;
             }
         }
     }
