@@ -18,23 +18,9 @@ To use this tool, you will need:
 
 # Configuration
 To configure the agent, you need to specify the following settings:
-- Icinga2 URL, e.g. **https://myserver.localdomain.loc:5665**
+- Icinga2 URL, e.g. **https://myhost.localdomain.loc:5665/**
 - API username
 - API password
 
 A configure dialog is started by right-clicking the trayicon and clicking ``Configure``. This dialog also gives you additional possibilities for customization (*e.g. sounds, colors, hostgroup filters,...*).
-
-To create an Icinga2 API user, create a configuration file like this on your Icinga2 server:
-```
-object ApiUser "busylight" {
-  password = "giertz"
-  permissions = [ "objects/query/Host", "objects/query/Service", "objects/query/Hostgroup" ]
-}
-```
-
-This will create an API user ``busylight`` with password ``giertz`` and allow reading host and service information. Depending on your Icinga2 configuration, you might also need to enable the API module if it is not already enabled:
-```
-# icinga2 api setup
-# icinga2 feature enable api
-# service icinga2 restart
-```
+See the [wiki](https://github.com/stdevel/IcingaBusylightAgent/wiki/configuration-client
