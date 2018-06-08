@@ -68,7 +68,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BusylightSDK">
-      <HintPath>D:\Busylight_SDK\DOTNET4\BusylightSDK.dll</HintPath>
+      <HintPath>..\..\..\BusylightSDK\DOTNET4\BusylightSDK.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Lync.Model, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
